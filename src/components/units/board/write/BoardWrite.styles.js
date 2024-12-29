@@ -145,19 +145,7 @@ export const PF = {
   SubmitButton: styled.button`
     width: 179px;
     height: 52px;
-    border: none;
-    font-size: 16px;
-    font-weight: 500;
-    margin-left: 12px;
-    margin-right: 12px;
-    cursor: pointer;
-
-    background-color: yellow;
-  `,
-  SubmitButton: styled.button`
-    width: 179px;
-    height: 52px;
-    border: none;
+    border: 1px solid rgba(0, 0, 0, 0.3);
     font-size: 16px;
     font-weight: 500;
     margin-left: 12px;
