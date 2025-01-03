@@ -10,7 +10,6 @@ export const PF = {
   `,
   Wrapper: styled.div`
     width: 1200px;
-    /* height: 1847px; */
     border: 1px solid black;
     margin: 100px;
     padding-top: 80px;
@@ -142,7 +141,7 @@ export const PF = {
     margin-right: 12px;
     cursor: pointer;
   `,
-  SubmitButton: styled.button`
+  SubmitButton: styled.button<{ isActive: boolean }>`
     width: 179px;
     height: 52px;
     border: 1px solid rgba(0, 0, 0, 0.3);
@@ -151,8 +150,7 @@ export const PF = {
     margin-left: 12px;
     margin-right: 12px;
     cursor: pointer;
-
-    background-color: yellow;
+    background-color: ${(props) => (props.isActive ? "yellow" : "grey")};
 
     &:active {
       background-color: white; /* 클릭했을 때 배경색을 흰색으로 변경 */

@@ -1,18 +1,41 @@
-import { PF } from "./BoardWrite.styles.js";
+import { useEffect } from "react";
+import { IBoardWriteUIProps } from "./BoardWrite.types";
+import { PF } from "./BoardWrite.styles";
 
-export default function BoardWriteUI(props) {
-  const { register, handleSubmit, errors, isValid, onSubmit } = props;
+export default function BoardWriteUI(props: IBoardWriteUIProps) {
+  const {
+    register,
+    handleSubmit,
+    errors,
+    isValid,
+    setValue,
+    onClickSubmit,
+    onClickUpdate,
+    isEdit,
+    data,
+  } = props;
+
+  useEffect(() => {
+    if (data) {
+      setValue("writer", data.fetchBoard?.writer);
+      setValue("title", data.fetchBoard?.title);
+      setValue("contents", data.fetchBoard?.contents);
+    }
+  }, [data, setValue]);
+
   return (
     <PF.Custombody>
       <PF.Wrapper>
-        <PF.Title>게시글 등록</PF.Title>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <PF.Title>{isEdit ? "게시글 수정" : "게시글 등록"}</PF.Title>
+        <form onSubmit={handleSubmit(isEdit ? onClickUpdate : onClickSubmit)}>
           <PF.WriterWrapper>
             <PF.InputWrapper>
               <PF.Label>작성자</PF.Label>
               <PF.Writer
                 type="text"
                 placeholder="이름을 적어주세요."
+                defaultValue={data?.fetchBoard.writer}
+                readOnly={isEdit}
                 {...register("writer", { required: "작성자를 입력해주세요." })}
               />
               <PF.Error>{errors.writer?.message}</PF.Error>
@@ -34,6 +57,7 @@ export default function BoardWriteUI(props) {
             <PF.Subject
               type="text"
               placeholder="제목을 작성해주세요."
+              defaultValue={data?.fetchBoard.title}
               {...register("title", { required: "제목을 입력해주세요." })}
             />
             <PF.Error>{errors.title?.message}</PF.Error>
@@ -42,43 +66,14 @@ export default function BoardWriteUI(props) {
             <PF.Label>내용</PF.Label>
             <PF.Contents
               placeholder="내용을 작성해주세요."
+              defaultValue={data?.fetchBoard.contents}
               {...register("contents", { required: "내용을 입력해주세요." })}
             />
             <PF.Error>{errors.contents?.message}</PF.Error>
           </PF.InputWrapper>
-          <PF.InputWrapper>
-            <PF.Label>주소</PF.Label>
-            <PF.ZipcodeWrapper>
-              <PF.Zipcode placeholder="07250" />
-              <PF.SearchButton>우편번호 검색</PF.SearchButton>
-            </PF.ZipcodeWrapper>
-            <PF.Address />
-            <PF.Address />
-          </PF.InputWrapper>
-          <PF.InputWrapper>
-            <PF.Label>유튜브</PF.Label>
-            <PF.Youtube placeholder="링크를 복사해주세요." />
-          </PF.InputWrapper>
-          <PF.ImageWrapper>
-            <PF.Label>사진첨부</PF.Label>
-            <PF.UploadButton>+</PF.UploadButton>
-            <PF.UploadButton>+</PF.UploadButton>
-            <PF.UploadButton>+</PF.UploadButton>
-          </PF.ImageWrapper>
-          <PF.OptionWrapper>
-            <PF.Label>메인설정</PF.Label>
-            <PF.RadioButton type="radio" id="youtube" name="radio-button" />
-            <PF.RadioLabel htmlFor="youtube">유튜브</PF.RadioLabel>
-            <PF.RadioButton type="radio" id="image" name="radio-button" />
-            <PF.RadioLabel htmlFor="image">사진</PF.RadioLabel>
-          </PF.OptionWrapper>
           <PF.ButtonWrapper>
-            <PF.SubmitButton
-              type="submit"
-              style={{ backgroundColor: isValid ? "yellow" : "grey" }}
-              disabled={!isValid}
-            >
-              등록하기
+            <PF.SubmitButton type="submit" isActive={isEdit || isValid}>
+              {isEdit ? "수정하기" : "등록하기"}
             </PF.SubmitButton>
           </PF.ButtonWrapper>
         </form>

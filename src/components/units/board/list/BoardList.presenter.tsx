@@ -1,7 +1,8 @@
 import { getDate } from "../../../../commons/libraries/utils";
 import { BL } from "./BoardList.styles";
+import { IBoardListUIProps } from "./BoardList.types";
 
-export default function BoardListUI(props) {
+export default function BoardListUI(props: IBoardListUIProps) {
   const { data, onClickMoveToBoardNew, onClickMoveToBoardDetail } = props;
   return (
     <BL.Custombody>

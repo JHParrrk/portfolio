@@ -1,7 +1,8 @@
 import { BD } from "./BoardDetail.styles";
+import { IBoardDetailUIProps } from "./BoardDetail.types";
 
-export default function BoardDetailUI(props) {
-  const { data, onClickDelete, onClickList } = props;
+export default function BoardDetailUI(props: IBoardDetailUIProps) {
+  const { data, onClickDelete, onClickList, onClickEdit } = props;
 
   return (
     <BD.Custombody>
@@ -23,7 +24,7 @@ export default function BoardDetailUI(props) {
         </BD.CardWrapper>
         <BD.BottomWrapper>
           <BD.Button onClick={onClickList}>목록으로</BD.Button>
-          <BD.Button>수정하기</BD.Button>
+          <BD.Button onClick={onClickEdit}>수정하기</BD.Button>
           <BD.Button onClick={onClickDelete}>삭제하기</BD.Button>
         </BD.BottomWrapper>
       </BD.Wrapper>
