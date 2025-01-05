@@ -45,7 +45,7 @@ export default function BoardWrite(props: IBoardWriteProps) {
       if (!result.data) {
         throw new Error("게시글 생성에 실패했습니다.");
       }
-      router.push(`/boards/${result.data.createBoard._id}`);
+      void router.push(`/boards/${result.data.createBoard._id}`);
       alert("게시글이 등록되었습니다.");
     } catch (error: any) {
       console.error(error);
