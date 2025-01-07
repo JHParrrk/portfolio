@@ -4,7 +4,7 @@ import { BaseSyntheticEvent } from "react";
 export interface IBoardCommentWriteUIProps {
   onClickWrite: (e?: BaseSyntheticEvent) => Promise<void>; // onSubmit을 onClickWrite로 대체
   register: UseFormRegister<IFormValues>;
-  setValue: UseFormSetValue<IFormValues>;
+  handleRateChange: (value: number) => void;
   errors: FieldErrors<IFormValues>;
   contents: string;
 }

@@ -73,6 +73,7 @@ export default function BoardCommentList() {
         variables: {
           updateBoardCommentInput: {
             contents: formData.contents,
+            rating: formData.rating,
           },
           password: formData.password,
           boardCommentId: isEditing!,
@@ -143,6 +144,10 @@ export default function BoardCommentList() {
     await handleSubmit(onSubmit)(); // 폼을 제출합니다.
   };
 
+  const handleRateChange = (value: number) => {
+    setValue("rating", value);
+  };
+
   const props = {
     data,
     onClickDelete,
@@ -154,6 +159,7 @@ export default function BoardCommentList() {
     handleEditClick,
     handleCancelClick,
     handleChangeContent,
+    handleRateChange,
     handleSaveClick,
   }; // UI 컴포넌트에 전달할 props를 정의합니다.
 

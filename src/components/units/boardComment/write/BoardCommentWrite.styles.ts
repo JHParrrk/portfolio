@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-// import { Rate } from "antd";
+import { Rate } from "antd";
 
 export const BCW = {
   Custombody: styled.div`
@@ -56,9 +56,9 @@ export const BCW = {
     color: white;
     cursor: pointer;
   `,
-  // StyledRate: styled(Rate)`
-  //   font-size: 24px; // 별점 크기 변경
-  //   color: #ffd700; // 별점 색상 변경
-  //   margin-left: 15px;
-  // `,
+  StyledRate: styled(Rate)`
+    font-size: 24px; // 별점 크기 변경
+    color: #ffd700; // 별점 색상 변경
+    margin-left: 15px;
+  `,
 };

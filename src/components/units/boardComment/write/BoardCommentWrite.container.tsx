@@ -59,13 +59,17 @@ export default function BoardCommentWrite() {
 
   const contents = watch("contents", ""); // contents 값을 가져오기 위해 추가
 
+  const handleRateChange = (value: number) => {
+    setValue("rating", value);
+  };
+
   const extendedProps = {
     register,
     handleSubmit,
     errors,
     isValid,
     contents, // 추가
-    setValue, // 추가
+    handleRateChange, // 추가
     onClickWrite: handleSubmit(onSubmit),
   };
 

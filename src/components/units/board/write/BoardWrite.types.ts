@@ -1,3 +1,4 @@
+import type { ChangeEvent } from "react";
 import {
   UseFormRegister,
   UseFormHandleSubmit,
@@ -11,6 +12,10 @@ export interface IFormData {
   password: string;
   title: string;
   contents: string;
+  zipcode: string;
+  address: string;
+  addressDetail: string;
+  youtubeUrl: string;
 }
 
 export interface IBoardWriteProps {
@@ -33,6 +38,10 @@ export interface IBoardWriteUIProps {
   errors: any;
   isValid: boolean;
   setValue: any;
+  isOpen: boolean;
+  onChangeAddressDetail: (event: ChangeEvent<HTMLInputElement>) => void;
+  onClickAddressSearch: () => void;
+  onCompleteAddressSearch: (data: any) => void;
   onClickSubmit: () => void;
   onClickUpdate: () => void;
 }

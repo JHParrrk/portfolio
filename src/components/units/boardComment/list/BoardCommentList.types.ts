@@ -24,10 +24,12 @@ export interface IBoardCommentListUIProps {
   handleSaveClick: () => void; // 저장 클릭 핸들러
   handleCancelClick: () => void; // 취소 클릭 핸들러
   handleEditClick: (id: string, contents: string) => void; // 수정 클릭 핸들러
+  handleRateChange: (value: number) => void; // 별점 변경 핸들러
 }
 
 export interface IFormInput {
   // 폼 입력 데이터 타입을 정의합니다.
   contents: string; // 댓글 내용
   password: string; // 비밀번호
+  rating: number; // 별점
 }

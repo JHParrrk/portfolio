@@ -1,4 +1,7 @@
 import styled from "@emotion/styled";
+import { Modal } from "antd";
+import DaumPostcode from "react-daum-postcode";
+import type { ISubmitButtonProps } from "./BoardWrite.types";
 
 export const PF = {
   // PostForm
@@ -150,7 +153,8 @@ export const PF = {
     margin-left: 12px;
     margin-right: 12px;
     cursor: pointer;
-    background-color: ${(props) => (props.isActive ? "yellow" : "grey")};
+    background-color: ${(props: ISubmitButtonProps) =>
+      props.isActive ? "grey" : "yellow"};
 
     &:active {
       background-color: white; /* 클릭했을 때 배경색을 흰색으로 변경 */
@@ -162,4 +166,6 @@ export const PF = {
     font-size: 14px;
     color: red;
   `,
+  AddressModal: styled(Modal)``,
+  AddressSearchInput: styled(DaumPostcode)``,
 };
