@@ -2,17 +2,24 @@ import styled from "@emotion/styled";
 import { Rate } from "antd";
 
 export const BCW = {
-  Custombody: styled.div`
+  CustomBody: styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
   `,
+  MainWrapper: styled.div`
+    width: 100%;
+    padding-left: 10px;
+  `,
   Wrapper: styled.div`
     width: 1200px;
     margin: 0px 100px;
   `,
-  PencilIcon: styled.img``,
+  PencilIcon: styled.img`
+    width: 24px;
+    height: 24px;
+  `,
   InputWrapper: styled.div`
     display: flex;
     flex-direction: row;
@@ -56,7 +63,12 @@ export const BCW = {
     color: white;
     cursor: pointer;
   `,
-  StyledRate: styled(Rate)`
+  CancelIcon: styled.img`
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  `,
+  Star: styled(Rate)`
     font-size: 24px; // 별점 크기 변경
     color: #ffd700; // 별점 색상 변경
     margin-left: 15px;

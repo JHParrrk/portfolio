@@ -1,9 +1,16 @@
 import { getDate } from "../../../../commons/libraries/utils";
 import { BL } from "./BoardList.styles";
 import { IBoardListUIProps } from "./BoardList.types";
-
+import Paginations01 from "../../../commons/paginations/01/Paginations01.container";
 export default function BoardListUI(props: IBoardListUIProps) {
-  const { data, onClickMoveToBoardNew, onClickMoveToBoardDetail } = props;
+  const {
+    data,
+    onClickMoveToBoardNew,
+    onClickMoveToBoardDetail,
+    refetch,
+    count,
+  } = props;
+
   return (
     <BL.Custombody>
       <BL.Wrapper>
@@ -30,6 +37,7 @@ export default function BoardListUI(props: IBoardListUIProps) {
         ))}
         <BL.TableBottom />
         <BL.Footer>
+          <Paginations01 refetch={refetch} count={count} />
           <BL.Button onClick={onClickMoveToBoardNew}>
             <BL.PencilIcon src="/images/board/list/write.png" />
             게시물 등록하기

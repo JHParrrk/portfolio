@@ -55,6 +55,7 @@ export default function BoardWrite(props: IBoardWriteProps) {
       }); // props.data가 변경될 때마다 폼 값을 초기화합니다.
     }
   }, [props.data, reset]); // props.data 또는 reset 함수가 변경될 때마다 실행
+  // props.data가 존재할 경우, reset 함수를 사용하여 기존 데이터를 폼 필드에 설정합니다.
 
   const [createBoard] = useMutation<
     Pick<IMutation, "createBoard">,
