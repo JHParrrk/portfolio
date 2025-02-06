@@ -1,19 +1,21 @@
-import { IBoardWriteUIProps } from "./BoardWrite.types"; // 컴포넌트에서 사용할 타입을 임포트합니다.
-import { PF } from "./BoardWrite.styles"; // 스타일 컴포넌트를 임포트합니다.
+import { IBoardWriteUIProps } from "./BoardWrite.types";
+import { PF } from "./BoardWrite.styles";
+import Uploads01 from "../../../commons/uploads/01/Uploads01.container";
+import { v4 as uuidv4 } from "uuid";
 
 export default function BoardWriteUI(props: IBoardWriteUIProps) {
   const {
-    register, // 폼 필드를 등록하는 함수
-    handleSubmit, // 폼 제출을 핸들링하는 함수
-    errors, // 폼 필드의 오류 상태
-    isValid, // 폼의 유효성 상태
-    onClickSubmit, // 폼 제출 시 호출되는 함수
-    onClickUpdate, // 폼 업데이트 시 호출되는 함수
-    isEdit, // 수정 모드 여부를 나타내는 불리언 값
-    isOpen, // 주소 검색 모달의 열림 상태
-    onChangeAddressDetail, // 주소 상세 내용을 변경할 때 호출되는 함수
-    onClickAddressSearch, // 주소 검색 버튼 클릭 시 호출되는 함수
-    onCompleteAddressSearch, // 주소 검색 완료 시 호출되는 함수
+    register,
+    formState: { errors, isValid },
+    onClickSubmit,
+    onClickUpdate,
+    isEdit,
+    isOpen,
+    onChangeAddressDetail,
+    onClickAddressSearch,
+    onCompleteAddressSearch,
+    onChangeFileUrls,
+    fileUrls,
   } = props;
 
   return (
@@ -25,7 +27,7 @@ export default function BoardWriteUI(props: IBoardWriteUIProps) {
       )}
       <PF.Wrapper>
         <PF.Title>{isEdit ? "게시글 수정" : "게시글 등록"}</PF.Title>
-        <form onSubmit={handleSubmit(isEdit ? onClickUpdate : onClickSubmit)}>
+        <form onSubmit={isEdit ? onClickUpdate : onClickSubmit}>
           <PF.WriterWrapper>
             <PF.InputWrapper>
               <PF.Label>작성자</PF.Label>
@@ -99,9 +101,16 @@ export default function BoardWriteUI(props: IBoardWriteUIProps) {
           </PF.InputWrapper>
           <PF.ImageWrapper>
             <PF.Label>사진첨부</PF.Label>
-            <PF.UploadButton>+</PF.UploadButton>
-            <PF.UploadButton>+</PF.UploadButton>
-            <PF.UploadButton>+</PF.UploadButton>
+            <PF.ImageBox>
+              {fileUrls.map((el, index) => (
+                <Uploads01
+                  key={uuidv4()}
+                  index={index}
+                  fileUrl={el}
+                  onChangeFileUrls={onChangeFileUrls}
+                />
+              ))}
+            </PF.ImageBox>
           </PF.ImageWrapper>
           <PF.OptionWrapper>
             <PF.Label>메인설정</PF.Label>

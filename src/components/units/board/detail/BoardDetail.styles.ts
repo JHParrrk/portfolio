@@ -113,4 +113,13 @@ export const BD = {
     color: #828282;
   `,
   LinkIcon: styled.img``,
+  ImageWrapper: styled.div`
+    display: flex;
+    flex-direction: column;
+  `,
+  Image: styled.img`
+    width: 996px;
+    height: 480px;
+    margin-bottom: 30px;
+  `,
 };

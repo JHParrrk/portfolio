@@ -1,10 +1,14 @@
-import type { ChangeEvent } from "react";
+// BoardWrite.types.ts
+
 import {
-  UseFormRegister,
-  UseFormHandleSubmit,
   FieldErrors,
+  UseFormHandleSubmit,
+  UseFormRegister,
   UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
+import { ChangeEvent, BaseSyntheticEvent } from "react";
+import { Address } from "react-daum-postcode";
 import { IQuery } from "../../../../commons/types/generated/types";
 
 export interface IFormData {
@@ -16,34 +20,31 @@ export interface IFormData {
   address: string;
   addressDetail: string;
   youtubeUrl: string;
+  images: string[]; // 이미지 URL 배열
+}
+
+export interface IBoardWriteUIProps {
+  register: UseFormRegister<IFormData>;
+  formState: {
+    errors: FieldErrors<IFormData>;
+    isValid: boolean;
+  };
+  watch: UseFormWatch<IFormData>;
+  isOpen: boolean;
+  onChangeAddressDetail: (event: ChangeEvent<HTMLInputElement>) => void;
+  onClickAddressSearch: () => void;
+  onCompleteAddressSearch: (data: Address) => void;
+  onClickSubmit: (e?: BaseSyntheticEvent) => Promise<void>; // 타입 수정
+  onClickUpdate: (e?: BaseSyntheticEvent) => Promise<void>; // 타입 수정
+  isEdit: boolean;
+  data?: Pick<IQuery, "fetchBoard">;
+  onChangeFileUrls: (fileUrl: string, index: number) => void; // 매개변수 이름 수정
+  fileUrls: string[];
 }
 
 export interface IBoardWriteProps {
   isEdit: boolean;
   data?: Pick<IQuery, "fetchBoard">;
-  register: UseFormRegister<IFormData>;
-  handleSubmit: UseFormHandleSubmit<IFormData>;
-  errors: FieldErrors<IFormData>;
-  isValid: boolean;
-  setValue: UseFormSetValue<IFormData>;
-  onClickSubmit: () => void;
-  onClickUpdate: () => void;
-}
-
-export interface IBoardWriteUIProps {
-  isEdit: boolean;
-  data?: Pick<IQuery, "fetchBoard">;
-  register: any;
-  handleSubmit: any;
-  errors: any;
-  isValid: boolean;
-  setValue: any;
-  isOpen: boolean;
-  onChangeAddressDetail: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClickAddressSearch: () => void;
-  onCompleteAddressSearch: (data: any) => void;
-  onClickSubmit: () => void;
-  onClickUpdate: () => void;
 }
 
 export interface ISubmitButtonProps {

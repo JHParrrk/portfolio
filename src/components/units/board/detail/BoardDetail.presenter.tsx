@@ -1,3 +1,5 @@
+// BoardDetail.presenter.tsx
+
 import { BD } from "./BoardDetail.styles";
 import { getDate } from "../../../../../src/commons/libraries/utils";
 import { IBoardDetailUIProps } from "./BoardDetail.types";
@@ -6,6 +8,7 @@ import { Tooltip } from "antd";
 export default function BoardDetailUI(props: IBoardDetailUIProps) {
   const { data, onClickDelete, onClickList, onClickEdit } = props;
 
+  console.log(data?.fetchBoard?.images);
   return (
     <BD.Custombody>
       <BD.Wrapper>
@@ -15,7 +18,9 @@ export default function BoardDetailUI(props: IBoardDetailUIProps) {
               <BD.Avatar src="/images/avatar.png" />
               <BD.Info>
                 <BD.Writer>{data?.fetchBoard?.writer}</BD.Writer>
-                <BD.CreatedAt>{data?.fetchBoard?.createdAt}</BD.CreatedAt>
+                <BD.CreatedAt>
+                  {getDate(data?.fetchBoard?.createdAt)}
+                </BD.CreatedAt>
               </BD.Info>
             </BD.AvatarWrapper>
             <BD.IconWrapper>
@@ -33,6 +38,16 @@ export default function BoardDetailUI(props: IBoardDetailUIProps) {
           <BD.Body>
             <BD.Title>{data?.fetchBoard?.title}</BD.Title>
             <BD.Contents>{data?.fetchBoard?.contents}</BD.Contents>
+            <BD.ImageWrapper>
+              {data?.fetchBoard.images
+                ?.filter((el) => el)
+                .map((el) => (
+                  <BD.Image
+                    key={el}
+                    src={`http://storage.googleapis.com/${el}`}
+                  />
+                ))}
+            </BD.ImageWrapper>
             {data?.fetchBoard.youtubeUrl !== "" && (
               <BD.Youtube
                 url={data?.fetchBoard.youtubeUrl ?? ""}
