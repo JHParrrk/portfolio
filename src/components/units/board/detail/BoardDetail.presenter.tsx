@@ -8,7 +8,6 @@ import { Tooltip } from "antd";
 export default function BoardDetailUI(props: IBoardDetailUIProps) {
   const { data, onClickDelete, onClickList, onClickEdit } = props;
 
-  console.log(data?.fetchBoard?.images);
   return (
     <BD.Custombody>
       <BD.Wrapper>

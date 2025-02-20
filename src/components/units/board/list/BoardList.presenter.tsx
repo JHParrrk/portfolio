@@ -2,6 +2,10 @@ import { getDate } from "../../../../commons/libraries/utils";
 import { BL } from "./BoardList.styles";
 import { IBoardListUIProps } from "./BoardList.types";
 import Paginations01 from "../../../commons/paginations/01/Paginations01.container";
+import Searchbars01, {
+  highLightText,
+} from "../../../commons/searchbars/01/Searchbars01.container";
+
 export default function BoardListUI(props: IBoardListUIProps) {
   const {
     data,
@@ -9,11 +13,19 @@ export default function BoardListUI(props: IBoardListUIProps) {
     onClickMoveToBoardDetail,
     refetch,
     count,
+    refetchBoardsCount,
+    keyword,
+    onChangeKeyword,
   } = props;
 
   return (
     <BL.Custombody>
       <BL.Wrapper>
+        <Searchbars01
+          refetch={refetch}
+          refetchBoardsCount={refetchBoardsCount}
+          onChangeKeyword={onChangeKeyword}
+        />
         <BL.TableTop />
         <BL.Row>
           <BL.ColumnHeaderBasic>ID</BL.ColumnHeaderBasic>
@@ -29,7 +41,7 @@ export default function BoardListUI(props: IBoardListUIProps) {
             마지막 4글자를 대문자로 변환하여 표시 */}
             </BL.ColumnBasic>
             <BL.ColumnTitle id={el._id} onClick={onClickMoveToBoardDetail}>
-              {el.title}
+              {highLightText(el.title, keyword)}
             </BL.ColumnTitle>
             <BL.ColumnBasic>{el.writer}</BL.ColumnBasic>
             <BL.ColumnBasic>{getDate(el.createdAt)}</BL.ColumnBasic>

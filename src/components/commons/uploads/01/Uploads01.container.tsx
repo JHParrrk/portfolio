@@ -9,10 +9,12 @@ import { Modal } from "antd";
 
 export default function Uploads01(props: IUploads01Props): JSX.Element {
   const fileRef = useRef<HTMLInputElement>(null);
+  // fileRef를 초기화하여 파일 입력 요소의 참조를 저장합니다.
   const [uploadFile] = useMutation(UPLOAD_FILE);
 
   const onClickUpload = (): void => {
     fileRef.current?.click();
+    // 클릭 시, 클릭한 인풋 태그 정보를 fileRef에 할당합니다.
   };
 
   const onChangeFile = async (
@@ -26,8 +28,12 @@ export default function Uploads01(props: IUploads01Props): JSX.Element {
       const result = await uploadFile({ variables: { file } });
       const url = result.data.uploadFile.url; // 서버에서 받은 이미지 URL
 
-      console.log("업로드01에서받는 URL", url);
+      // BoardWrite.tsx의 함수
       props.onChangeFileUrls(url, props.index);
+      // onChangeFileUrls를 받을 수 있도록 타입 정의
+      // BoardWrite.presenter에 import하고 설정
+      // BoardWrite.presenter에서 onChangeFileUrls를 받음
+      // 정의된 타입으로 전달합니다
     } catch (error) {
       if (error instanceof Error) Modal.error({ content: error.message });
     }

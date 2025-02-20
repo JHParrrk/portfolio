@@ -126,6 +126,7 @@ export default function BoardWrite(props: IBoardWriteProps) {
     if (
       JSON.stringify(formData.images) !==
       JSON.stringify(props.data?.fetchBoard.images)
+      // 그냥 비교하면 주소를 비교하기때문에 문자열로 비교하기 위하여
     ) {
       updateBoardInput.images = formData.images;
     }

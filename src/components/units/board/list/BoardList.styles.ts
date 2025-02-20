@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import type { ITextTokenProps } from "./BoardList.types";
 
 export const BL = {
   // BoardList
@@ -74,5 +75,8 @@ export const BL = {
     :hover {
       background-color: #f5f2fc;
     }
+  `,
+  TextToken: styled.span`
+    color: ${(props: ITextTokenProps) => (props.isMatched ? "red" : "black")};
   `,
 };
