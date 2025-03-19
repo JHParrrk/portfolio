@@ -7,8 +7,23 @@ export default function LayoutHeaderUI(props: ILayoutHeaderProps): JSX.Element {
       <LH.InnerWrapper>
         <LH.InnerLogo onClick={props.onClickLogo}>💎 LIVE</LH.InnerLogo>
         <div>
-          <LH.InnerButton onClick={props.onClickMoveToLogin}>로그인</LH.InnerButton>
-          <LH.InnerButton>회원가입</LH.InnerButton>
+          {props.token ? (
+            <>
+              <LH.InnerButton onClick={props.onClickMoveToMyPage}>
+                {props.data?.fetchUserLoggedIn?.name ?? "사용자"}님 환영합니다.
+              </LH.InnerButton>
+              <LH.InnerButton onClick={props.onClickLogout}>
+                로그아웃
+              </LH.InnerButton>
+            </>
+          ) : (
+            <>
+              <LH.InnerButton onClick={props.onClickMoveToLogin}>
+                로그인
+              </LH.InnerButton>
+              <LH.InnerButton>회원가입</LH.InnerButton>
+            </>
+          )}
         </div>
       </LH.InnerWrapper>
     </LH.Wrapper>
