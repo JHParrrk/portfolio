@@ -43,7 +43,7 @@ const ApolloSettings = (props: IApolloSettingsProps): JSX.Element => {
   // useEffect는 마운트 이후 실행됨
 
   const uploadLink = createUploadLink({
-    uri: "https://backendonline.codebootcamp.co.kr/graphql",
+    uri: "http://backendonline.codebootcamp.co.kr/graphql",
     headers: {
       authorization: `Bearer ${accessToken}`,
     },

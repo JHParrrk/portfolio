@@ -3,11 +3,14 @@
 import styled from "@emotion/styled";
 import { Modal } from "antd";
 import DaumPostcode from "react-daum-postcode";
-import type { ISubmitButtonProps } from "./BoardWrite.types";
+
+interface ISubmitButtonProps {
+  isActive: boolean;
+}
 
 export const PF = {
   // 전체 레이아웃을 담당하는 컨테이너
-  Custombody: styled.div`
+  CustomBody: styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;

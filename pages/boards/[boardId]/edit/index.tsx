@@ -1,28 +1,16 @@
-import BoardWrite from "../../../../src/components/units/board/write/BoardWrite.container";
-import { FETCH_BOARD } from "../../../../src/components/units/board/detail/BoardDetail.queries";
-import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
-import {
-  IQuery,
-  IQueryFetchBoardArgs,
-} from "../../../../src/commons/types/generated/types";
-import useBoardForm from "../../../../src/hooks/useBoardForm";
+import BoardWrite from "../../../../src/components/units/board/write/BoardWrite.index";
+import { useQueryFetchBoard } from "@/src/components/commons/hooks/queries/useQueryFetchBoard";
 
 const BoardsEditPage = () => {
-  const router = useRouter();
+  const { data, loading, error } = useQueryFetchBoard();
 
-  if (!router || typeof router.query.boardId !== "string") return <></>;
-  const { data } = useQuery<Pick<IQuery, "fetchBoard">, IQueryFetchBoardArgs>(
-    FETCH_BOARD,
-    { variables: { boardId: router.query.boardId } }
-  );
-
-  const boardFormProps = useBoardForm();
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+  if (!data) return <p>No data available</p>;
 
   const props = {
     isEdit: true,
     data,
-    ...boardFormProps,
   };
 
   return <BoardWrite {...props} />;

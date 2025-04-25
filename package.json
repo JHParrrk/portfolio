@@ -14,6 +14,7 @@
     "@apollo/client": "^3.12.2",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@hookform/resolvers": "^5.0.1",
     "antd": "^5.22.7",
     "apollo-upload-client": "^18.0.1",
     "axios": "^1.7.9",
@@ -31,7 +32,8 @@
     "recoil": "^0.7.7",
     "slick-carousel": "^1.8.1",
     "ts-node": "^10.9.2",
-    "uuid": "^11.0.5"
+    "uuid": "^11.0.5",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.3",

@@ -1,4 +1,4 @@
-import { FETCH_USER_LOGGED_IN } from "@/src/components/units/mypages/mypage/mypage.queries";
+import { FETCH_USER_LOGGED_IN } from "@/src/components/commons/hooks/queries/useQueryFetchUserLoggedIn";
 import MyPageUI from "./mypage.presenter";
 import { useQuery } from "@apollo/client";
 import { IQuery } from "@/src/commons/types/generated/types";

@@ -7,7 +7,7 @@ export const LoginCheckHoc = (Component: any) => (props: any) => {
   useEffect(() => {
     if (localStorage.getItem("accessToken") === null) {
       alert("로그인이 필요한 페이지입니다.");
-      void router.push("/login");
+      void router.push("/");
     }
   }, []);
   // 이곳이 먼저 실행되고 그 다음에 프롭스가 실행된다.
