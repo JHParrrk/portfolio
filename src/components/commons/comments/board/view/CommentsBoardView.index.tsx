@@ -13,6 +13,7 @@ export default function CommentsBoardView(props: ICommentsBoardViewProps) {
   const { onClickDelete, onChangeDeletePassword } = useBoardComment({
     boardId: id,
     boardCommentId: props.el._id,
+    refetch: props.refetch,
   });
 
   return (
@@ -61,6 +62,7 @@ export default function CommentsBoardView(props: ICommentsBoardViewProps) {
           isEdit={true}
           onToggleEdit={onToggleEdit}
           el={props.el}
+          refetch={props.refetch}
         />
       )}
     </>

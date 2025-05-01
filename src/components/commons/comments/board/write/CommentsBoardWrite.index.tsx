@@ -2,12 +2,17 @@ import { CBW } from "./CommentsBoardWrite.styles";
 import { useForm, Controller } from "react-hook-form";
 import { useBoardComment } from "../../../hooks/customs/useBoardComment";
 import { useQueryIdChecker } from "../../../hooks/customs/useQueryIdChecker";
-import { IBoardComment } from "../../../../../commons/types/generated/types";
+import {
+  IBoardComment,
+  IQuery,
+} from "../../../../../commons/types/generated/types";
+import { ApolloQueryResult } from "@apollo/client";
 
 interface ICommentsBoardWriteProps {
   isEdit?: boolean;
   onToggleEdit?: () => void;
   el?: IBoardComment;
+  refetch?: () => Promise<ApolloQueryResult<Pick<IQuery, any>>>;
 }
 
 export default function CommentsBoardWrite(props: ICommentsBoardWriteProps) {
@@ -16,6 +21,10 @@ export default function CommentsBoardWrite(props: ICommentsBoardWriteProps) {
     boardId: id,
     boardCommentId: props.el?._id,
     onToggleEdit: props.onToggleEdit,
+    refetch:
+      props.refetch ??
+      (() =>
+        Promise.resolve({ data: {} } as ApolloQueryResult<Pick<IQuery, any>>)),
   });
 
   const { register, handleSubmit, control, watch, reset } = useForm({
@@ -29,6 +38,8 @@ export default function CommentsBoardWrite(props: ICommentsBoardWriteProps) {
 
   // 작성된 내용의 길이 추적
   const contents = watch("contents"); // 'contents' 필드의 값을 실시간으로 추적
+
+  console.log("CommentsBoardWrite - refetch 확인:", props.refetch);
 
   return (
     <CBW.Wrapper>
@@ -80,7 +91,16 @@ export default function CommentsBoardWrite(props: ICommentsBoardWriteProps) {
           <CBW.ContentsLength>{contents?.length}/100</CBW.ContentsLength>
           <CBW.Button
             onClick={handleSubmit((data) =>
-              props.isEdit ? onClickUpdate(data) : onClickWrite(data, reset)
+              props.isEdit
+                ? onClickUpdate(
+                    data,
+                    props.refetch ??
+                      (() =>
+                        Promise.resolve({ data: {} } as ApolloQueryResult<
+                          Pick<IQuery, any>
+                        >))
+                  )
+                : onClickWrite(data, reset)
             )}
           >
             {props.isEdit ? "수정하기" : "등록하기"}

@@ -6,7 +6,9 @@ import CommentsBoardWrite from "../../../../commons/comments/board/write/Comment
 
 export default function BoardDetailFooter() {
   const { id } = useQueryIdChecker("boardId");
-  const { data, fetchMore } = useQueryFetchBoardComment({ boardId: id });
+  const { data, fetchMore, refetch } = useQueryFetchBoardComment({
+    boardId: id,
+  });
 
   const onLoadMore = () => {
     if (!data) return; // 데이터가 없으면 반환
@@ -30,6 +32,8 @@ export default function BoardDetailFooter() {
     });
   };
 
+  console.log("BoardDetailFooter - refetch 확인:", refetch);
+
   return (
     <>
       <CommentsBoardWrite />
@@ -50,7 +54,7 @@ export default function BoardDetailFooter() {
           }
         >
           {data?.fetchBoardComments?.map((el) => (
-            <CommentsBoardView key={el._id} el={el} />
+            <CommentsBoardView key={el._id} el={el} refetch={refetch}  />
           )) || <></>}
         </InfiniteScroll>
       )}
