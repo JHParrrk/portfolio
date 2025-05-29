@@ -20,7 +20,11 @@ const CardWrapper = styled.div`
 
 export default function BoardDetailBody() {
   const { id } = useQueryIdChecker("boardId");
-  const { data } = useQueryFetchBoard({ boardId: id });
+  const { data, loading, error } = useQueryFetchBoard(id); // boardId를 직접 전달
+
+  if (loading) return <p>Loading...</p>; // 로딩 중 표시
+  if (error) return <p>Error: {error.message}</p>; // 에러 발생 시 메시지 표시
+  if (!data) return <p>No data available</p>; // 데이터가 없을 때 메시지 표시
 
   return (
     <CardWrapper>

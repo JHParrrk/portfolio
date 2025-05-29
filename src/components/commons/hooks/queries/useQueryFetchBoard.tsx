@@ -26,12 +26,13 @@ export const FETCH_BOARD = gql`
   }
 `;
 
-export const useQueryFetchBoard = () => {
+export const useQueryFetchBoard = (boardIdParam?: string) => {
   const router = useRouter();
-
-  // boardId를 내부에서 처리
   const boardId =
-    typeof router.query.boardId === "string" ? router.query.boardId : undefined;
+    boardIdParam ||
+    (typeof router.query.boardId === "string"
+      ? router.query.boardId
+      : undefined);
 
   const { data, loading, error } = useQuery<
     Pick<IQuery, "fetchBoard">,
