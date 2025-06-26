@@ -10,6 +10,8 @@ import {
 import { useForm } from "react-hook-form";
 import type { Address } from "react-daum-postcode";
 import { ChangeEvent, useState, useEffect } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { boardSchema } from "@/src/commons/validations/boardSchema";
 
 export interface IBoardWriteDataProps {
   data?: Pick<IQuery, "fetchBoard">;
@@ -41,12 +43,14 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isValid },
     setValue,
     getValues,
     watch,
     reset,
   } = useForm<IFormData>({
+    resolver: yupResolver(boardSchema),
     mode: "onChange",
     defaultValues: {
       writer: "",
@@ -209,6 +213,7 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
   return {
     register,
     handleSubmit,
+    control,
     errors,
     isValid,
     onSubmit,

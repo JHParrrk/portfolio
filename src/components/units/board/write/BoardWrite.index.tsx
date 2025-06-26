@@ -1,27 +1,26 @@
-import { v4 as uuidv4 } from "uuid";
-import { PF } from "./BoardWrite.styles";
-import Uploads01 from "../../../commons/uploads/01/Uploads01.container";
-import { useBoardWrite } from "@/src/components/commons/hooks/customs/useBoardWrite";
-import { IQuery } from "@/src/commons/types/generated/types";
+// BoardWriter.index.tsx
 
-interface IBoardWriteProps {
-  isEdit: boolean;
-  data?: Pick<IQuery, "fetchBoard">;
-}
+import { v4 as uuidv4 } from "uuid";
+import dynamic from "next/dynamic";
+import { Controller } from "react-hook-form";
+import { PF } from "./BoardWrite.styles";
+import Uploads01 from "@/src/components/commons/uploads/01/Uploads01.container";
+import { useBoardWrite } from "@/src/components/commons/hooks/customs/useBoardWrite";
+import { IBoardWriteProps } from "./BoardWrite.types";
+
+// ReactQuill 동적 import (SSR 방지)
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill/dist/quill.snow.css";
 
 export default function BoardWrite(props: IBoardWriteProps) {
   const {
-    // 폼 관련
     register,
     handleSubmit,
+    control,
     errors,
     isValid,
-
-    // 상태 관련
     isOpen,
     fileUrls,
-
-    // 이벤트 핸들러
     onSubmit,
     onUpdate,
     onChangeAddressDetail,
@@ -33,7 +32,6 @@ export default function BoardWrite(props: IBoardWriteProps) {
   return (
     <PF.CustomBody>
       {isOpen && (
-        // onCancel에 toggleModal 연결 – 모달 종료 시 동일 상태 변경
         <PF.AddressModal open={isOpen} onCancel={toggleModal}>
           <PF.AddressSearchInput onComplete={onCompleteAddressSearch} />
         </PF.AddressModal>
@@ -52,18 +50,17 @@ export default function BoardWrite(props: IBoardWriteProps) {
                 type="text"
                 placeholder="이름을 적어주세요."
                 readOnly={props.isEdit}
-                {...register("writer", { required: "작성자를 입력해주세요." })}
+                {...register("writer")}
               />
               <PF.Error>{errors.writer?.message}</PF.Error>
             </PF.InputWrapper>
+
             <PF.InputWrapper>
               <PF.Label>비밀번호</PF.Label>
               <PF.Password
                 type="password"
                 placeholder="비밀번호를 작성해주세요."
-                {...register("password", {
-                  required: "비밀번호를 입력해주세요.",
-                })}
+                {...register("password")}
               />
               <PF.Error>{errors.password?.message}</PF.Error>
             </PF.InputWrapper>
@@ -74,16 +71,24 @@ export default function BoardWrite(props: IBoardWriteProps) {
             <PF.Subject
               type="text"
               placeholder="제목을 작성해주세요."
-              {...register("title", { required: "제목을 입력해주세요." })}
+              {...register("title")}
             />
             <PF.Error>{errors.title?.message}</PF.Error>
           </PF.InputWrapper>
 
           <PF.InputWrapper>
             <PF.Label>내용</PF.Label>
-            <PF.Contents
-              placeholder="내용을 작성해주세요."
-              {...register("contents", { required: "내용을 입력해주세요." })}
+            <Controller
+              name="contents"
+              control={control}
+              render={({ field }) => (
+                <ReactQuill
+                  {...field}
+                  theme="snow"
+                  placeholder="내용을 작성해주세요."
+                  style={{ height: "300px", marginBottom: "40px" }}
+                />
+              )}
             />
             <PF.Error>{errors.contents?.message}</PF.Error>
           </PF.InputWrapper>
@@ -94,30 +99,27 @@ export default function BoardWrite(props: IBoardWriteProps) {
               <PF.Zipcode
                 placeholder="07250"
                 readOnly
-                {...register("zipcode", {
-                  required: "우편번호를 입력해주세요.",
-                })}
+                {...register("zipcode")}
               />
               <PF.SearchButton onClick={toggleModal}>
                 우편번호 검색
               </PF.SearchButton>
             </PF.ZipcodeWrapper>
-            <PF.Address
-              readOnly
-              {...register("address", { required: "주소를 입력해주세요." })}
-            />
+            <PF.Address readOnly {...register("address")} />
             <PF.Address
               {...register("addressDetail")}
               onChange={onChangeAddressDetail}
             />
+            <PF.Error>{errors.address?.message}</PF.Error>
           </PF.InputWrapper>
 
           <PF.InputWrapper>
             <PF.Label>유튜브</PF.Label>
             <PF.Youtube
               placeholder="링크를 복사해주세요."
-              {...register("youtubeUrl", { required: "링크를 복사해주세요." })}
+              {...register("youtubeUrl")}
             />
+            <PF.Error>{errors.youtubeUrl?.message}</PF.Error>
           </PF.InputWrapper>
 
           <PF.ImageWrapper>
@@ -132,6 +134,7 @@ export default function BoardWrite(props: IBoardWriteProps) {
                 />
               ))}
             </PF.ImageBox>
+            <PF.Error>{errors.images?.message}</PF.Error>
           </PF.ImageWrapper>
 
           <PF.OptionWrapper>

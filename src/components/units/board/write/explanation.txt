@@ -1,0 +1,4 @@
+control은 React Hook Form에서 Controller 컴포넌트를 사용할 때 필요한 핵심 객체로, 
+ReactQuill, DatePicker, Select와 같이 단순 register()로는 연결할 수 없는 제어형 
+컴포넌트를 폼에 연결할 수 있게 해준다. control을 통해 폼의 상태와 해당 컴포넌트 간의 
+값을 동기화하며, 사용자 입력을 추적하고 유효성 검사까지 함께 적용할 수 있다.

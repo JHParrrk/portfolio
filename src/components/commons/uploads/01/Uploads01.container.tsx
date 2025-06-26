@@ -1,51 +1,100 @@
-import { useMutation } from "@apollo/client";
-import { useRef } from "react";
-import type { ChangeEvent } from "react";
-import { checkValidationImage } from "./Uploads01.validation";
-import Uploads01UI from "./Uploads01.presenter";
 import type { IUploads01Props } from "./Uploads01.types";
-import { UPLOAD_FILE } from "./Uploads01.queries";
-import { Modal } from "antd";
+import { ULD } from "./Uploads01.styles";
+import { useUploadImage } from "@/src/components/commons/hooks/customs/useUploadImage";
+import { ChangeEvent, useState } from "react";
 
 export default function Uploads01(props: IUploads01Props): JSX.Element {
-  const fileRef = useRef<HTMLInputElement>(null);
-  // fileRef를 초기화하여 파일 입력 요소의 참조를 저장합니다.
-  const [uploadFile] = useMutation(UPLOAD_FILE);
+  const [isUploading, setIsUploading] = useState(false);
 
-  const onClickUpload = (): void => {
-    fileRef.current?.click();
-    // 클릭 시, 클릭한 인풋 태그 정보를 fileRef에 할당합니다.
+  const { fileRef, onClickUpload, onChangeFile } = useUploadImage({
+    onChangeFileUrls: (url, index) => {
+      props.onChangeFileUrls(url, index);
+      setIsUploading(false); // 업로드 끝난 후 로딩 종료
+    },
+    index: props.index,
+  });
+
+  // 업로드 시작 전에 로딩 켜기
+  const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsUploading(true);
+    onChangeFile(e); // 기존 훅 함수 호출
   };
 
-  const onChangeFile = async (
-    event: ChangeEvent<HTMLInputElement>
-  ): Promise<void> => {
-    const file = event.target.files?.[0];
-    const isValid = checkValidationImage(file);
-    if (!isValid) return;
-
-    try {
-      const result = await uploadFile({ variables: { file } });
-      const url = result.data.uploadFile.url; // 서버에서 받은 이미지 URL
-
-      // BoardWrite.tsx의 함수
-      props.onChangeFileUrls(url, props.index);
-      // onChangeFileUrls를 받을 수 있도록 타입 정의
-      // BoardWrite.presenter에 import하고 설정
-      // BoardWrite.presenter에서 onChangeFileUrls를 받음
-      // 정의된 타입으로 전달합니다
-    } catch (error) {
-      if (error instanceof Error) Modal.error({ content: error.message });
-    }
+  // fileUrl이 data:로 시작하면 미리보기, 아니면 서버 이미지
+  const getImageSrc = (fileUrl: string) => {
+    if (!fileUrl) return "";
+    if (fileUrl.startsWith("data:")) return fileUrl;
+    return `https://storage.googleapis.com/${fileUrl}`;
   };
 
   return (
-    <Uploads01UI
-      fileRef={fileRef}
-      fileUrl={props.fileUrl}
-      defaultFileUrl={props.defaultFileUrl}
-      onClickUpload={onClickUpload}
-      onChangeFile={onChangeFile}
-    />
+    <ULD.Wrapper>
+      {props.fileUrl !== "" ? (
+        <ULD.UploadImage
+          onClick={onClickUpload}
+          src={getImageSrc(props.fileUrl)}
+        />
+      ) : (
+        <ULD.UploadButton type="button" onClick={onClickUpload}>
+          + Upload
+        </ULD.UploadButton>
+      )}
+
+      {isUploading && <ULD.SpinnerOverlay size="large" />}
+
+      <ULD.UploadFileHidden
+        type="file"
+        accept="image/*"
+        ref={fileRef}
+        onChange={handleChangeFile}
+      />
+    </ULD.Wrapper>
   );
 }
+
+// import type { IUploads01Props } from "./Uploads01.types";
+// import { ULD } from "./Uploads01.styles";
+// import { useUploadImage } from "@/src/components/commons/hooks/customs/useUploadImage";
+// import { ChangeEvent, useState } from "react";
+
+// export default function Uploads01(props: IUploads01Props): JSX.Element {
+//   const [isUploading, setIsUploading] = useState(false);
+
+//   const { fileRef, onClickUpload, onChangeFile } = useUploadImage({
+//     onChangeFileUrls: async (url, index) => {
+//       props.onChangeFileUrls(url, index);
+//       setIsUploading(false); // 업로드 끝난 후 로딩 종료
+//     },
+//     index: props.index,
+//   });
+
+//   // 업로드 시작 전에 로딩 켜기
+//   const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
+//     setIsUploading(true);
+//     onChangeFile(e); // 기존 훅 함수 호출
+//   };
+
+//   return (
+//     <ULD.Wrapper>
+//       {props.fileUrl !== "" ? (
+//         <ULD.UploadImage
+//           onClick={onClickUpload}
+//           src={`https://storage.googleapis.com/${props.fileUrl}`}
+//         />
+//       ) : (
+//         <ULD.UploadButton type="button" onClick={onClickUpload}>
+//           + Upload
+//         </ULD.UploadButton>
+//       )}
+
+//       {isUploading && <ULD.SpinnerOverlay size="large" />}
+
+//       <ULD.UploadFileHidden
+//         type="file"
+//         accept="image/*"
+//         ref={fileRef}
+//         onChange={handleChangeFile}
+//       />
+//     </ULD.Wrapper>
+//   );
+// }
