@@ -1,7 +1,7 @@
-// useBoardWrite.tsx
 import { useRouter } from "next/router";
 import { useMutationCreateBoard } from "@/src/components/commons/hooks/mutations/useMutationCreateBoard";
 import { useMutationUpdateBoard } from "@/src/components/commons/hooks/mutations/useMutationUpdateBoard";
+import { useMutationUploadFile } from "@/src/components/commons/hooks/mutations/useMutationUploadFile";
 import {
   IUpdateBoardInput,
   IBoardAddressInput,
@@ -11,35 +11,20 @@ import { useForm } from "react-hook-form";
 import type { Address } from "react-daum-postcode";
 import { ChangeEvent, useState, useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { boardSchema } from "@/src/commons/validations/boardSchema";
+import { boardSchema, IFormData } from "@/src/commons/validations/boardSchema";
 
 export interface IBoardWriteDataProps {
   data?: Pick<IQuery, "fetchBoard">;
 }
 
-interface IFormData {
-  writer: string;
-  password: string;
-  title: string;
-  contents: string;
-  zipcode: string;
-  address: string;
-  addressDetail: string;
-  youtubeUrl: string;
-  images: string[]; // 이미지 URL 배열
-}
 
 export const useBoardWrite = (props: IBoardWriteDataProps) => {
   const { data } = props;
   const router = useRouter();
 
-  // 주소 검색 모달 열림 상태 (여기서 상태를 관리)
   const [isOpen, setIsOpen] = useState(false);
-
-  // 토글 함수 추가
   const toggleModal = () => setIsOpen((prev) => !prev);
 
-  // react-hook-form 설정 (기본 값과 유효성 검사 등)
   const {
     register,
     handleSubmit,
@@ -65,7 +50,6 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     },
   });
 
-  // 수정모드일 경우 기존 데이터를 form에 세팅
   useEffect(() => {
     if (data?.fetchBoard) {
       reset({
@@ -84,14 +68,38 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     }
   }, [data, reset]);
 
-  // 게시글 생성 뮤테이션
   const [createBoard] = useMutationCreateBoard();
-  // 게시글 수정 뮤테이션
   const [updateBoard] = useMutationUpdateBoard();
+  const [uploadFile] = useMutationUploadFile();
 
-  // 게시글 생성 처리 함수
+  // dataURL을 File 객체로 변환하는 함수
+  function dataURLtoFile(dataurl: string, filename = "image.png") {
+    const arr = dataurl.split(",");
+    const mime = arr[0].match(/:(.*?);/)?.[1] || "";
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  }
+
+  // 게시글 등록
   const onSubmit = async (formData: IFormData) => {
     try {
+      // 1. dataURL인 경우 서버 업로드 후 URL로 변환
+      const images = await Promise.all(
+        (formData.images || ["", "", ""]).map(async (img) => {
+          if (img && img.startsWith("data:")) {
+            const file = dataURLtoFile(img);
+            const res = await uploadFile({ variables: { file } });
+            return res.data?.uploadFile.url ?? "";
+          }
+          return img;
+        })
+      );
+
       const result = await createBoard({
         variables: {
           createBoardInput: {
@@ -100,7 +108,7 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
             title: formData.title,
             contents: formData.contents,
             youtubeUrl: formData.youtubeUrl,
-            images: formData.images,
+            images,
             boardAddress:
               formData.address || formData.zipcode || formData.addressDetail
                 ? {
@@ -122,12 +130,11 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     }
   };
 
-  // 게시글 수정 처리 함수
+  // 게시글 수정
   const onUpdate = async (formData: IFormData) => {
     const updateBoardInput: IUpdateBoardInput = {};
     const boardAddressInput: IBoardAddressInput = {};
 
-    // 변경된 필드만 업데이트
     if (formData.title && formData.title !== data?.fetchBoard.title)
       updateBoardInput.title = formData.title;
     if (formData.contents && formData.contents !== data?.fetchBoard.contents)
@@ -138,14 +145,25 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     )
       updateBoardInput.youtubeUrl = formData.youtubeUrl;
 
+    // 이미지 변경 시 dataURL 업로드 처리
+    let images = formData.images;
     if (
       JSON.stringify(formData.images) !==
       JSON.stringify(data?.fetchBoard.images)
     ) {
-      updateBoardInput.images = formData.images;
+      images = await Promise.all(
+        (formData.images || ["", "", ""]).map(async (img) => {
+          if (img && img.startsWith("data:")) {
+            const file = dataURLtoFile(img);
+            const res = await uploadFile({ variables: { file } });
+            return res.data?.uploadFile.url ?? "";
+          }
+          return img;
+        })
+      );
+      updateBoardInput.images = images;
     }
 
-    // 주소 변경 확인
     if (
       formData.zipcode !== data?.fetchBoard.boardAddress?.zipcode ||
       formData.address !== data?.fetchBoard.boardAddress?.address ||
@@ -161,7 +179,6 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
       }
     }
 
-    // 변경된 내용이 없으면 함수 종료
     if (Object.keys(updateBoardInput).length === 0) {
       alert("수정사항이 없습니다.");
       return;
@@ -186,20 +203,19 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     }
   };
 
-  // 입력 핸들러들
   const onChangeAddressDetail = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
     setValue("addressDetail", event.target.value);
   };
 
-  // 주소 검색 완료 시 (모달을 닫기 위해 훅 내부의 상태를 사용)
   const onCompleteAddressSearch = (data: Address): void => {
     setValue("zipcode", data.zonecode);
     setValue("address", data.address);
-    setIsOpen(false); // → 여기서 모달이 닫힘
+    setIsOpen(false);
   };
 
+  // 이미지 미리보기/업로드용 URL 관리
   const onChangeFileUrls = (fileUrl: string, index: number): void => {
     const images = getValues("images") || ["", "", ""];
     const newImages = [...images];
@@ -207,7 +223,6 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     setValue("images", newImages);
   };
 
-  // 감시하는 이미지 상태값
   const fileUrls = watch("images") || ["", "", ""];
 
   return {
@@ -223,6 +238,6 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     onChangeFileUrls,
     isOpen,
     fileUrls,
-    toggleModal, // 토글 함수 반환
+    toggleModal,
   };
 };

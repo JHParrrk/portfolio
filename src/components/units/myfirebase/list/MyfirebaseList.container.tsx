@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import MyfirebaseListUI from "./MyfirebaseList.presenter";
 import { collection, getFirestore, getDocs } from "firebase/firestore/lite";
 import type { DocumentData } from "firebase/firestore/lite";
-import { useRouter } from "next/router";
 import { firebaseApp } from "../../../../commons/libraries/firebase";
+import { useMoveToPage } from "@/src/components/commons/hooks/customs/useMoveToPage";
+
 
 export default function MyfirebaseList(): JSX.Element {
-  const router = useRouter();
+  const { onClickMoveToPage } = useMoveToPage();
   const [dataBoards, setDataBoards] = useState<DocumentData[]>([]);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export default function MyfirebaseList(): JSX.Element {
   }, []);
 
   const onClickMoveToBoardNew = (): void => {
-    void router.push("/myfirebase/new");
+    onClickMoveToPage("/myfirebase/new");
   };
 
   return (

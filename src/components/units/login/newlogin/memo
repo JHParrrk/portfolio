@@ -1,0 +1,22 @@
+<form onSubmit={handleSubmit(onSubmit)}>
+
+        {/* 폼 제출 이벤트를 처리하는 부분.
+  react-hook-form의 handleSubmit 함수로 감싸서 유효성 검사를 먼저 수행한 뒤,
+  유효한 경우에만 onSubmit(data)를 실행함.
+
+  - handleSubmit(onSubmit): 
+    → react-hook-form이 제공하는 고차 함수.
+    → 내부적으로 event.preventDefault()를 자동으로 처리함.
+    → register로 등록된 필드들의 값을 추출해서 onSubmit에 넘겨줌.
+    → 유효성 검사 실패 시 errors 객체에 메시지를 담고, onSubmit은 실행되지 않음.
+
+  - onSubmit(data): 
+    → useLogin 훅에서 정의된 로그인 처리 함수.
+    → 로그인 mutation 실행, accessToken 저장, 페이지 이동 등의 로직 포함.
+
+  이 구조 덕분에 개발자는 직접 event를 처리하거나 값을 추출할 필요 없이,
+  깔끔하게 비즈니스 로직만 onSubmit에 작성하면 됨. */}
+       
+       
+
+

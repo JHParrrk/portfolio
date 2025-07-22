@@ -1,18 +1,14 @@
-// BoardWriter.index.tsx
-
-import { v4 as uuidv4 } from "uuid";
 import dynamic from "next/dynamic";
 import { Controller } from "react-hook-form";
 import { PF } from "./BoardWrite.styles";
-import Uploads01 from "@/src/components/commons/uploads/01/Uploads01.container";
 import { useBoardWrite } from "@/src/components/commons/hooks/customs/useBoardWrite";
 import { IBoardWriteProps } from "./BoardWrite.types";
+import Uploads01 from "@/src/components/commons/uploads/01/Uploads01.index";
 
-// ReactQuill 동적 import (SSR 방지)
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
 
-export default function BoardWrite(props: IBoardWriteProps) {
+export default function BoardWrite(props: IBoardWriteProps): JSX.Element {
   const {
     register,
     handleSubmit,
@@ -20,12 +16,12 @@ export default function BoardWrite(props: IBoardWriteProps) {
     errors,
     isValid,
     isOpen,
-    fileUrls,
+    fileUrls, // 이전에 useBoardWrite에서 watch("images")로 가져오던 부분
     onSubmit,
     onUpdate,
     onChangeAddressDetail,
     onCompleteAddressSearch,
-    onChangeFileUrls,
+    onChangeFileUrls, // 원래 이름
     toggleModal,
   } = useBoardWrite({ data: props.data });
 
@@ -82,15 +78,17 @@ export default function BoardWrite(props: IBoardWriteProps) {
               name="contents"
               control={control}
               render={({ field }) => (
-                <ReactQuill
-                  {...field}
-                  theme="snow"
-                  placeholder="내용을 작성해주세요."
-                  style={{ height: "300px", marginBottom: "40px" }}
-                />
+                <>
+                  <ReactQuill
+                    {...field}
+                    theme="snow"
+                    placeholder="내용을 작성해주세요."
+                    style={{ height: "300px", marginBottom: "40px" }}
+                  />
+                  <PF.Error>{errors.contents?.message}</PF.Error>
+                </>
               )}
             />
-            <PF.Error>{errors.contents?.message}</PF.Error>
           </PF.InputWrapper>
 
           <PF.InputWrapper>
@@ -101,7 +99,7 @@ export default function BoardWrite(props: IBoardWriteProps) {
                 readOnly
                 {...register("zipcode")}
               />
-              <PF.SearchButton onClick={toggleModal}>
+              <PF.SearchButton onClick={toggleModal} type="button">
                 우편번호 검색
               </PF.SearchButton>
             </PF.ZipcodeWrapper>
@@ -127,21 +125,30 @@ export default function BoardWrite(props: IBoardWriteProps) {
             <PF.ImageBox>
               {fileUrls.map((el, index) => (
                 <Uploads01
-                  key={uuidv4()}
+                  key={el || index}
                   index={index}
                   fileUrl={el}
                   onChangeFileUrls={onChangeFileUrls}
                 />
               ))}
             </PF.ImageBox>
-            <PF.Error>{errors.images?.message}</PF.Error>
           </PF.ImageWrapper>
 
           <PF.OptionWrapper>
             <PF.Label>메인설정</PF.Label>
-            <PF.RadioButton type="radio" id="youtube" name="radio-button" />
+            <PF.RadioButton
+              type="radio"
+              id="youtube"
+              value="youtube"
+              // {...register("mainSetting")}
+            />
             <PF.RadioLabel htmlFor="youtube">유튜브</PF.RadioLabel>
-            <PF.RadioButton type="radio" id="image" name="radio-button" />
+            <PF.RadioButton
+              type="radio"
+              id="image"
+              value="image"
+              // {...register("mainSetting")}
+            />
             <PF.RadioLabel htmlFor="image">사진</PF.RadioLabel>
           </PF.OptionWrapper>
 

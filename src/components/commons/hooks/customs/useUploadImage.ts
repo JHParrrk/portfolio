@@ -25,87 +25,22 @@ export const useUploadImage = ({
     const isValid = checkValidationImage(file);
     if (!isValid) return;
 
-    try {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const url = reader.result as string;
-        onChangeFileUrls(url, index); // 미리보기용 data URL 전달
-      };
-      reader.onerror = () => {
-        Modal.error({ content: "이미지 미리보기에 실패했습니다." });
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        Modal.error({ content: error.message });
-      }
-    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const url = reader.result as string;
+      onChangeFileUrls(url, index); // 미리보기용 data URL 전달
+    };
+    reader.onerror = () => {
+      Modal.error({ content: "이미지 미리보기에 실패했습니다." });
+    };
 
     event.target.value = ""; // 같은 파일 다시 선택 가능하도록 초기화
-  };
-
-  const onDeleteFile = () => {
-    onChangeFileUrls("", index); // 빈 값으로 초기화
   };
 
   return {
     fileRef,
     onClickUpload,
     onChangeFile,
-    onDeleteFile,
   };
 };
-
-// import { useRef } from "react";
-// import type { ChangeEvent } from "react";
-// import { Modal } from "antd";
-// import { useMutationUpLoadFile } from "@/src/components/commons/hooks/mutations/useMutationUpLoadFile";
-// import { checkValidationImage } from "@/src/components/commons/uploads/01/Uploads01.validation";
-
-// interface IUseUploadImage {
-//   onChangeFileUrls: (url: string, index: number) => void;
-//   index: number;
-// }
-
-// export const useUploadImage = ({
-//   onChangeFileUrls,
-//   index,
-// }: IUseUploadImage) => {
-//   const fileRef = useRef<HTMLInputElement>(null);
-//   const [uploadFile] = useMutationUpLoadFile();
-
-//   const onClickUpload = () => {
-//     fileRef.current?.click();
-//   };
-
-//   const onChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
-//     const file = event.target.files?.[0];
-//     if (!file) return;
-
-//     const isValid = checkValidationImage(file);
-//     if (!isValid) return;
-
-//     try {
-//       const result = await uploadFile({ variables: { file } });
-//       const url = result.data?.uploadFile.url;
-//       onChangeFileUrls(url ?? "", index);
-//     } catch (error) {
-//       if (error instanceof Error) {
-//         Modal.error({ content: error.message });
-//       }
-//     }
-
-//     event.target.value = ""; // 같은 파일 다시 선택 가능하도록 초기화
-//   };
-
-//   const onDeleteFile = () => {
-//     onChangeFileUrls("", index); // 그냥 빈 값으로 초기화
-//   };
-
-//   return {
-//     fileRef,
-//     onClickUpload,
-//     onChangeFile,
-//     onDeleteFile,
-//   };
-// };

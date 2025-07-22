@@ -12,7 +12,7 @@ export const UPLOAD_FILE = gql`
   }
 `;
 
-export const useMutationUpLoadFile = () => {
+export const useMutationUploadFile = () => {
   const mutation = useMutation<
     Pick<IMutation, "uploadFile">,
     IMutationUploadFileArgs

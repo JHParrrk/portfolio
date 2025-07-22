@@ -1,15 +1,22 @@
-import { ILoginPageUIProps } from "./NewLogin.types";
 import { NL } from "./NewLogin.styles";
+import { useLogin } from "@/src/components/commons/hooks/customs/useLogin";
+import { useMoveToPage } from "@/src/components/commons/hooks/customs/useMoveToPage";
 
-export default function NewLoginUI(props: ILoginPageUIProps): JSX.Element {
-  const { register, onSubmit, handleSignUpClick, errors, isValid } = props;
+export default function NewLogin(): JSX.Element {
+  const { onClickMoveToPage } = useMoveToPage();
 
+  const { register, onSubmit, handleSignUpClick, errors, isValid } = useLogin();
   return (
     <NL.Container>
       <NL.LoginForm>
-        {/* 폼 태그로 감싸서 onSubmit 핸들러 연결 */}
+        {/* 폼 태그로 감싸서 onSubmit 핸들러 연결 Memo에 자세한 설명*/}
         <form onSubmit={onSubmit}>
-          <NL.Logo src="/images/logo/logo.png" alt="Logo" />
+          <NL.Logo
+            src="/images/logo/logo.png"
+            alt="Logo"
+            onClick={onClickMoveToPage("/")} // 메인 화면 경로 ('/')로 이동하도록 설정
+            style={{ cursor: "pointer" }} // 클릭 가능한 요소임을 시각적으로 나타내기 위해 추가
+          />
           <NL.InputWrapper>
             {/* register을 사용하여 이메일 입력 필드 등록 및 validation rules 지정 */}
             <NL.Input

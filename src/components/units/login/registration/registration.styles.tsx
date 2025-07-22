@@ -4,12 +4,16 @@ import { IRegisButtonProps } from "./registration.types";
 export const RGI = {
   Container: styled.div`
     display: flex;
+    width: 100vw; // ✅ 화면 전체 너비
+    height: 100vh; // ✅ 화면 전체 높이
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     background-image: url("/images/background/BG.png");
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     position: relative;
     overflow: hidden;
 
@@ -34,6 +38,15 @@ export const RGI = {
     position: relative;
     z-index: 2;
     text-align: center;
+  `,
+  Logo: styled.img`
+    width: 300px;
+    margin-bottom: 40px;
+
+    @media (max-width: 768px) {
+      width: 200px; // ✅ 모바일에서 로고 크기 축소
+      margin-bottom: 24px;
+    }
   `,
   TitleText: styled.div`
     font-size: 28px;
