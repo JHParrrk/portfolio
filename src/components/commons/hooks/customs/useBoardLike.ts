@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import { useMutationDisLikeBoard } from "../mutations/useMutationDislikeBoard";
-import { useMutationLikeBoard } from "../mutations/useMutationLikeBoard";
-import { FETCH_BOARD } from "../queries/useQueryFetchBoard";
+import { useMutationDisLikeBoard } from "@/src/components/commons/hooks/mutations/useMutationDislikeBoard";
+import { useMutationLikeBoard } from "@/src/components/commons/hooks/mutations/useMutationLikeBoard";
+import { FETCH_BOARD } from "@/src/components/commons/hooks/queries/useQueryFetchBoard";
 
 interface IUseBoardLikeArgs {
   boardId: string;

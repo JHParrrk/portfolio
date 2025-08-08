@@ -1,3 +1,4 @@
+// C:\portfolio\firstapp\src\components\commons\hooks\customs\useBoardWrite.ts
 import { useRouter } from "next/router";
 import { useMutationCreateBoard } from "@/src/components/commons/hooks/mutations/useMutationCreateBoard";
 import { useMutationUpdateBoard } from "@/src/components/commons/hooks/mutations/useMutationUpdateBoard";
@@ -9,18 +10,19 @@ import {
 } from "@/src/commons/types/generated/types";
 import { useForm } from "react-hook-form";
 import type { Address } from "react-daum-postcode";
-import { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect, useMemo } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { boardSchema, IFormData } from "@/src/commons/validations/boardSchema";
+import { Modal } from "antd";
 
 export interface IBoardWriteDataProps {
   data?: Pick<IQuery, "fetchBoard">;
 }
 
-
 export const useBoardWrite = (props: IBoardWriteDataProps) => {
   const { data } = props;
   const router = useRouter();
+  const isEdit = router.pathname.includes("edit");
 
   const [isOpen, setIsOpen] = useState(false);
   const toggleModal = () => setIsOpen((prev) => !prev);
@@ -29,7 +31,7 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     register,
     handleSubmit,
     control,
-    formState: { errors, isValid },
+    formState: { errors, isValid, dirtyFields, isDirty },
     setValue,
     getValues,
     watch,
@@ -48,10 +50,19 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
       youtubeUrl: "",
       images: ["", "", ""],
     },
+    context: { isEdit },
   });
 
   useEffect(() => {
     if (data?.fetchBoard) {
+      // 1. 기존 이미지 배열의 길이를 가져옵니다.
+      const fetchedImages = data.fetchBoard.images ?? [];
+      // 2. 이미지 배열의 길이가 3보다 작으면 빈 문자열을 추가하여 길이를 3으로 만듭니다.
+      const imagesToReset = [
+        ...fetchedImages,
+        ...Array(3 - fetchedImages.length).fill(""),
+      ];
+
       reset({
         writer: data.fetchBoard.writer ?? "",
         title: data.fetchBoard.title ?? "",
@@ -60,11 +71,25 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
         address: data.fetchBoard.boardAddress?.address ?? "",
         addressDetail: data.fetchBoard.boardAddress?.addressDetail ?? "",
         youtubeUrl: data.fetchBoard.youtubeUrl ?? "",
-        images:
-          data.fetchBoard.images && data.fetchBoard.images.length > 0
-            ? data.fetchBoard.images
-            : ["", "", ""],
+        images: imagesToReset,
       });
+      const initialFileList = Array(3).fill(null);
+      setFileList(initialFileList);
+      // 게시글 수정일때
+    } else {
+      reset({
+        writer: "",
+        password: "",
+        title: "",
+        contents: "",
+        zipcode: "",
+        address: "",
+        addressDetail: "",
+        youtubeUrl: "",
+        images: ["", "", ""],
+      });
+      setFileList([null, null, null]);
+      // 게시글 최초 등록일때
     }
   }, [data, reset]);
 
@@ -72,34 +97,37 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
   const [updateBoard] = useMutationUpdateBoard();
   const [uploadFile] = useMutationUploadFile();
 
-  // dataURL을 File 객체로 변환하는 함수
-  function dataURLtoFile(dataurl: string, filename = "image.png") {
-    const arr = dataurl.split(",");
-    const mime = arr[0].match(/:(.*?);/)?.[1] || "";
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
+  const [fileList, setFileList] = useState<(File | null)[]>([null, null, null]);
+
+  // 기존 fileList 상태와 form의 images 값을 동기화하도록 수정
+  const onFileSelect = (file: File | undefined, index: number) => {
+    // fileList 업데이트
+    const newFileList = [...fileList];
+    newFileList[index] = file || null;
+    setFileList(newFileList);
+    if (file) {
+      setValue(`images.${index}`, "", { shouldDirty: true });
+      // react-hook-form의 setValue를 사용하여 images 배열의 해당 값들을 빈 문자열로 초기화
     }
-    return new File([u8arr], filename, { type: mime });
-  }
+  };
 
-  // 게시글 등록
   const onSubmit = async (formData: IFormData) => {
-    try {
-      // 1. dataURL인 경우 서버 업로드 후 URL로 변환
-      const images = await Promise.all(
-        (formData.images || ["", "", ""]).map(async (img) => {
-          if (img && img.startsWith("data:")) {
-            const file = dataURLtoFile(img);
-            const res = await uploadFile({ variables: { file } });
-            return res.data?.uploadFile.url ?? "";
-          }
-          return img;
-        })
-      );
+    // 1. 파일 업로드
+    const uploadedUrls = await Promise.all(
+      fileList.map(async (file, idx) => {
+        if (file) {
+          const result = await uploadFile({ variables: { file } });
+          return result.data?.uploadFile.url ?? "";
+        }
+        // 기존 서버 URL 유지
+        return formData.images?.[idx] || "";
+      })
+    );
 
+    // 업로드 후, 빈 문자열은 제외하고 서버에 보낼 배열을 만듭니다.
+    const finalImages = uploadedUrls.filter((url) => url !== "");
+    // 2. 서버에 등록
+    try {
       const result = await createBoard({
         variables: {
           createBoardInput: {
@@ -108,7 +136,6 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
             title: formData.title,
             contents: formData.contents,
             youtubeUrl: formData.youtubeUrl,
-            images,
             boardAddress:
               formData.address || formData.zipcode || formData.addressDetail
                 ? {
@@ -117,89 +144,86 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
                     addressDetail: formData.addressDetail,
                   }
                 : undefined,
+            images: finalImages,
           },
         },
       });
       if (!result.data?.createBoard) {
         throw new Error("게시글 생성에 실패했습니다.");
       }
-      alert("게시글이 등록되었습니다.");
+      Modal.success({ content: "게시글이 등록되었습니다." });
       void router.push(`/boards/${result.data.createBoard._id}`);
     } catch (error: any) {
-      if (error instanceof Error) alert(error.message);
+      if (error instanceof Error) Modal.error({ content: error.message });
     }
   };
 
-  // 게시글 수정
   const onUpdate = async (formData: IFormData) => {
-    const updateBoardInput: IUpdateBoardInput = {};
-    const boardAddressInput: IBoardAddressInput = {};
+    // 변경 사항이 없는 경우 경고 메시지 표시
+    // if (
+    //   Object.keys(dirtyFields).length === 0 &&
+    //   fileList.every((file) => !file)
+    // ) {
+    //   Modal.warning({ content: "수정된 내용이 없습니다." });
+    //   return;
+    // }
 
-    if (formData.title && formData.title !== data?.fetchBoard.title)
-      updateBoardInput.title = formData.title;
-    if (formData.contents && formData.contents !== data?.fetchBoard.contents)
-      updateBoardInput.contents = formData.contents;
-    if (
-      formData.youtubeUrl &&
-      formData.youtubeUrl !== data?.fetchBoard.youtubeUrl
-    )
+    // 1. 파일 업로드
+    const uploadedUrls = await Promise.all(
+      fileList.map(async (file, idx) => {
+        if (file) {
+          // 새 파일이 있으면 업로드
+          const result = await uploadFile({ variables: { file } });
+          return result.data?.uploadFile.url ?? "";
+        } else {
+          // 파일이 없으면 기존 images 배열의 값을 사용 (이 값은 삭제 버튼이나 새 파일 업로드로 인해 ""가 될 수 있음)
+          return formData.images?.[idx] || "";
+        }
+      })
+    );
+
+    // 업로드 후, 서버에 보낼 배열을 만듭니다.
+    const finalImages = uploadedUrls;
+
+    // 2. 서버에 수정 요청
+    const updateBoardInput: IUpdateBoardInput = {};
+
+    if (dirtyFields.title) updateBoardInput.title = formData.title;
+    if (dirtyFields.contents) updateBoardInput.contents = formData.contents;
+    if (dirtyFields.youtubeUrl)
       updateBoardInput.youtubeUrl = formData.youtubeUrl;
 
-    // 이미지 변경 시 dataURL 업로드 처리
-    let images = formData.images;
+    updateBoardInput.images = finalImages;
+
+    // 주소 정보 변경 여부 확인 및 추가
     if (
-      JSON.stringify(formData.images) !==
-      JSON.stringify(data?.fetchBoard.images)
+      dirtyFields.zipcode ||
+      dirtyFields.address ||
+      dirtyFields.addressDetail
     ) {
-      images = await Promise.all(
-        (formData.images || ["", "", ""]).map(async (img) => {
-          if (img && img.startsWith("data:")) {
-            const file = dataURLtoFile(img);
-            const res = await uploadFile({ variables: { file } });
-            return res.data?.uploadFile.url ?? "";
-          }
-          return img;
-        })
-      );
-      updateBoardInput.images = images;
+      updateBoardInput.boardAddress = {
+        zipcode: formData.zipcode,
+        address: formData.address,
+        addressDetail: formData.addressDetail,
+      };
     }
-
-    if (
-      formData.zipcode !== data?.fetchBoard.boardAddress?.zipcode ||
-      formData.address !== data?.fetchBoard.boardAddress?.address ||
-      formData.addressDetail !== data?.fetchBoard.boardAddress?.addressDetail
-    ) {
-      if (formData.zipcode) boardAddressInput.zipcode = formData.zipcode;
-      if (formData.address) boardAddressInput.address = formData.address;
-      if (formData.addressDetail)
-        boardAddressInput.addressDetail = formData.addressDetail;
-
-      if (Object.keys(boardAddressInput).length > 0) {
-        updateBoardInput.boardAddress = boardAddressInput;
-      }
-    }
-
-    if (Object.keys(updateBoardInput).length === 0) {
-      alert("수정사항이 없습니다.");
-      return;
-    }
-
-    const myVariables = {
-      boardId: router.query.boardId as string,
-      password: formData.password,
-      updateBoardInput,
-    };
 
     try {
       const result = await updateBoard({
-        variables: myVariables,
+        variables: {
+          boardId: router.query.boardId as string,
+          password: formData.password,
+          updateBoardInput,
+        },
       });
+
       if (!result.data?.updateBoard) {
         throw new Error("게시글 업데이트에 실패했습니다.");
       }
+      Modal.success({ content: "게시글이 수정되었습니다." });
       void router.push(`/boards/${result.data.updateBoard._id}`);
     } catch (error: any) {
-      if (error instanceof Error) alert(error.message);
+      Modal.error({ content: error.message });
     }
   };
 
@@ -215,15 +239,11 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     setIsOpen(false);
   };
 
-  // 이미지 미리보기/업로드용 URL 관리
-  const onChangeFileUrls = (fileUrl: string, index: number): void => {
-    const images = getValues("images") || ["", "", ""];
-    const newImages = [...images];
-    newImages[index] = fileUrl;
-    setValue("images", newImages);
-  };
-
   const fileUrls = watch("images") || ["", "", ""];
+  const isChanged = isDirty || fileList.some((file) => file !== null);
+  console.log("isDirty:", isDirty);
+  console.log("fileList:", fileList);
+  console.log("isChanged:", isChanged);
 
   return {
     register,
@@ -231,13 +251,15 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     control,
     errors,
     isValid,
+    isChanged,
     onSubmit,
     onUpdate,
     onChangeAddressDetail,
     onCompleteAddressSearch,
-    onChangeFileUrls,
+    onFileSelect,
     isOpen,
     fileUrls,
     toggleModal,
+    setValue,
   };
 };

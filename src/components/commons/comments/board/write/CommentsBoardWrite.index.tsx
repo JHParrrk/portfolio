@@ -39,7 +39,7 @@ export default function CommentsBoardWrite(props: ICommentsBoardWriteProps) {
   // 작성된 내용의 길이 추적
   const contents = watch("contents"); // 'contents' 필드의 값을 실시간으로 추적
 
-  console.log("CommentsBoardWrite - refetch 확인:", props.refetch);
+  // console.log("CommentsBoardWrite - refetch 확인:", props.refetch);
 
   return (
     <CBW.Wrapper>

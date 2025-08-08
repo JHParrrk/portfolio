@@ -32,7 +32,7 @@ export default function BoardDetailFooter() {
     });
   };
 
-  console.log("BoardDetailFooter - refetch 확인:", refetch);
+  // console.log("BoardDetailFooter - refetch 확인:", refetch);
 
   return (
     <>

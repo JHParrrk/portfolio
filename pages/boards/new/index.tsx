@@ -1,4 +1,4 @@
-import BoardWrite from "../../../src/components/units/board/write/BoardWrite.index";
+import BoardWrite from "@/src/components/units/board/write/BoardWrite.index";
 
 const BoardsNewPage = () => {
   const props = {

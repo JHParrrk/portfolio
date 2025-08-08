@@ -1,0 +1,71 @@
+  const onUpdate = async (formData: IFormData) => {
+    const updateBoardInput: IUpdateBoardInput = {};
+    const boardAddressInput: IBoardAddressInput = {};
+
+    if (formData.title && formData.title !== data?.fetchBoard.title)
+      updateBoardInput.title = formData.title;
+    if (formData.contents && formData.contents !== data?.fetchBoard.contents)
+      updateBoardInput.contents = formData.contents;
+    if (
+      formData.youtubeUrl &&
+      formData.youtubeUrl !== data?.fetchBoard.youtubeUrl
+    )
+      updateBoardInput.youtubeUrl = formData.youtubeUrl;
+
+    // 이미지 변경 시 dataURL 업로드 처리
+    let images = formData.images;
+    if (
+      JSON.stringify(formData.images) !==
+      JSON.stringify(data?.fetchBoard.images)
+    ) {
+      images = await Promise.all(
+        (formData.images || ["", "", ""]).map(async (img) => {
+          if (img && img.startsWith("data:")) {
+            const file = dataURLtoFile(img);
+            const res = await uploadFile({ variables: { file } });
+            return res.data?.uploadFile.url ?? "";
+          }
+          return img;
+        })
+      );
+      updateBoardInput.images = images;
+    }
+
+    if (
+      formData.zipcode !== data?.fetchBoard.boardAddress?.zipcode ||
+      formData.address !== data?.fetchBoard.boardAddress?.address ||
+      formData.addressDetail !== data?.fetchBoard.boardAddress?.addressDetail
+    ) {
+      if (formData.zipcode) boardAddressInput.zipcode = formData.zipcode;
+      if (formData.address) boardAddressInput.address = formData.address;
+      if (formData.addressDetail)
+        boardAddressInput.addressDetail = formData.addressDetail;
+
+      if (Object.keys(boardAddressInput).length > 0) {
+        updateBoardInput.boardAddress = boardAddressInput;
+      }
+    }
+
+    if (Object.keys(updateBoardInput).length === 0) {
+      alert("수정사항이 없습니다.");
+      return;
+    }
+
+    const myVariables = {
+      boardId: router.query.boardId as string,
+      password: formData.password,
+      updateBoardInput,
+    };
+
+    try {
+      const result = await updateBoard({
+        variables: myVariables,
+      });
+      if (!result.data?.updateBoard) {
+        throw new Error("게시글 업데이트에 실패했습니다.");
+      }
+      void router.push(`/boards/${result.data.updateBoard._id}`);
+    } catch (error: any) {
+      if (error instanceof Error) alert(error.message);
+    }
+  };

@@ -1,3 +1,4 @@
+// layout/index.tsx
 import LayoutBanner from "./banner/LayoutBanner.index"; // 상단 배너
 import LayoutHeader from "./header/LayoutHeader.index"; // 헤더
 import LayoutNavigation from "./navigation/LayoutNavigation.index"; // 네비게이션
@@ -19,7 +20,7 @@ interface IBodyProps {
 
 // 조건부 스타일이 적용된 Body 컴포넌트
 const Body = styled.div<IBodyProps>`
-  height: ${(props) => (props.fullHeight ? "100vh" : "500px")};
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -20,6 +20,7 @@ export const useMutationDeleteBoard = () => {
   return { deleteBoard };
 };
 
+// 당장을 쓸모 없음 상세페이지에서 삭제하고 목록으로 움직여서 새로고침되기때문
 // export const useMutationDeleteBoard = () => {
 //   const [deleteBoard] = useMutation<
 //     Pick<IMutation, "deleteBoard">, // 뮤테이션 결과의 타입 지정 (deleteBoard 필드를 포함)

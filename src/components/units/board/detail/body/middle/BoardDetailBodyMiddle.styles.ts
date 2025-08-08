@@ -48,10 +48,12 @@ export const BDBM = {
   ImageWrapper: styled.div`
     display: flex;
     flex-direction: column;
+    align-items: center; /* 이미지를 가운데 정렬하는 것이 좋습니다. */
   `,
   Image: styled.img`
-    width: 996px;
-    height: 480px;
+    width: 100%; /* 부모(ImageWrapper)의 너비에 맞춥니다. */
+    height: auto; /* width에 비례하여 높이를 자동으로 조절합니다. */
+    max-width: 996px; /* 이미지의 최대 너비를 996px로 제한합니다. */
     margin-bottom: 30px;
   `,
 };

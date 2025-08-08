@@ -2,29 +2,37 @@ import {
   UploadButton,
   UploadFileHidden,
   UploadImage,
+  DeleteButton,
 } from "./Uploads01.styles";
 import { useUploadImage } from "@/src/components/commons/hooks/customs/useUploadImage";
 import type { IUploads01Props } from "./Uploads01.types";
 
 export default function Uploads01(props: IUploads01Props): JSX.Element {
-  const { fileRef, onClickUpload, onChangeFile } = useUploadImage({
-    onChangeFileUrls: props.onChangeFileUrls,
-    index: props.index,
-  });
+  const { fileRef, onClickUpload, onChangeFile, onClickDelete, localFileUrl } =
+    useUploadImage({
+      onFileSelect: props.onFileSelect,
+      index: props.index,
+      setValue: props.setValue,
+    });
+  // UpLoads01로 온 onFileSelect함수를 useUploadImage로 전달 index도
 
-  // fileUrl이 data:로 시작하면 미리보기, 아니면 서버 이미지
-  const getImageSrc = (fileUrl: string) => {
-    if (!fileUrl) return "";
-    if (fileUrl.startsWith("data:")) return fileUrl;
-    return `https://storage.googleapis.com/${fileUrl}`;
-  };
+  // 로컬에 미리보기 Data URL이 있으면 그것을, 없으면 부모로부터 받은 URL을 사용
+  const imageUrl = localFileUrl || props.fileUrl;
+  const imageSrc = imageUrl.startsWith("data:")
+    ? imageUrl
+    : `https://storage.googleapis.com/${imageUrl}`;
 
   return (
     <>
-      {props.fileUrl !== "" ? (
-        <UploadImage onClick={onClickUpload} src={getImageSrc(props.fileUrl)} />
+      {imageUrl !== "" ? (
+        <div style={{ position: "relative" }}>
+          <UploadImage onClick={onClickUpload} src={imageSrc} />
+          <DeleteButton type="button" onClick={onClickDelete}>
+            ×
+          </DeleteButton>
+        </div>
       ) : (
-        <UploadButton onClick={onClickUpload}>
+        <UploadButton type="button" onClick={onClickUpload}>
           <>+</>
           <>Upload</>
         </UploadButton>

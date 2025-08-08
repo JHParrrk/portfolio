@@ -1,24 +1,28 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import type { ChangeEvent } from "react";
-import { Modal } from "antd";
 import { checkValidationImage } from "@/src/components/commons/uploads/01/Uploads01.validation";
+import { UseFormSetValue } from "react-hook-form";
+import { IFormData } from "@/src/commons/validations/boardSchema";
 
 interface IUseUploadImage {
-  onChangeFileUrls: (url: string, index: number) => void;
+  onFileSelect: (file: File | undefined, index: number) => void;
   index: number;
+  setValue: UseFormSetValue<IFormData>;
 }
 
 export const useUploadImage = ({
-  onChangeFileUrls,
+  onFileSelect,
   index,
+  setValue,
 }: IUseUploadImage) => {
   const fileRef = useRef<HTMLInputElement>(null);
+  const [localFileUrl, setLocalFileUrl] = useState(""); // 로컬 미리보기용 상태
 
   const onClickUpload = () => {
     fileRef.current?.click();
   };
 
-  const onChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -27,20 +31,27 @@ export const useUploadImage = ({
 
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = () => {
-      const url = reader.result as string;
-      onChangeFileUrls(url, index); // 미리보기용 data URL 전달
-    };
-    reader.onerror = () => {
-      Modal.error({ content: "이미지 미리보기에 실패했습니다." });
-    };
+    reader.onload = () => setLocalFileUrl(reader.result as string);
 
-    event.target.value = ""; // 같은 파일 다시 선택 가능하도록 초기화
+    onFileSelect(file, index); // 파일 객체만 부모로 전달
+    event.target.value = "";
+  };
+
+  const onClickDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    setLocalFileUrl(""); // 로컬 미리보기 상태 초기화
+    onFileSelect(undefined, index); // 부모에게 파일 삭제 알림
+    if (fileRef.current) {
+      fileRef.current.value = "";
+    }
+    setValue(`images.${index}`, "", { shouldDirty: true });
   };
 
   return {
     fileRef,
     onClickUpload,
     onChangeFile,
+    onClickDelete,
+    localFileUrl,
   };
 };

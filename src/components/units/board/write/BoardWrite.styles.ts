@@ -1,7 +1,6 @@
-// BoardWrite.styles.tsx
-
+// src/components/boards/write/BoardWrite.styles.tsx
 import styled from "@emotion/styled";
-import { Modal } from "antd";
+import { Modal, Button } from "antd";
 import DaumPostcode from "react-daum-postcode";
 
 interface ISubmitButtonProps {
@@ -119,36 +118,58 @@ export const PF = {
   `,
   // 이미지 업로드 섹션 랩퍼
   ImageWrapper: styled.div`
-    width: 996px;
+    width: 496px;
     padding-top: 40px;
   `,
-  // 이미지 박스 스타일 (좌측 정렬)
+  // 이미지 업로드 드롭존 스타일
+  DropzoneContainer: styled.div`
+    border: 1px dashed #ccc;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+  `,
+  // 이미지 미리보기 컨테이너
   ImageBox: styled.div`
     display: flex;
+    flex-direction: row;
+    margin-top: 20px;
     flex-wrap: wrap;
-    align-items: flex-start;
+    gap: 24px;
   `,
-  // 단일 이미지 컨테이너 스타일
-  ImageItem: styled.div`
-    margin-right: 24px;
-    margin-bottom: 24px;
+  // 이미지 미리보기 래퍼 (상대 위치 설정)
+  ImagePreviewWrapper: styled.div`
+    position: relative;
+    margin-right: 16px;
   `,
   // 이미지 미리보기 스타일
   ImagePreview: styled.img`
-    width: 78px;
-    height: 78px;
+    width: 100px;
+    height: 100px;
     object-fit: cover;
-    cursor: pointer;
-    border: 1px solid #bdbdbd;
   `,
-  // 이미지 업로드 버튼 스타일
-  UploadButton: styled.button`
-    width: 78px;
-    height: 78px;
-    background-color: #bdbdbd;
-    outline: none;
+  // 이미지 플레이스홀더 스타일
+  ImagePlaceholder: styled.div`
+    width: 100px;
+    height: 100px;
+    background: #f2f2f2;
+  `,
+  // 이미지 삭제 버튼 스타일 (Antd Button 확장)
+  ImageDeleteButton: styled(Button)`
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    padding: 0 6px;
+    background-color: #ff4d4f;
+    color: white;
     border: none;
     cursor: pointer;
+    font-size: 12px;
+    height: 24px;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
   `,
   // 옵션 설정 섹션 랩퍼
   OptionWrapper: styled.div`
@@ -173,34 +194,16 @@ export const PF = {
     justify-content: center;
     padding-top: 80px;
   `,
-  // 취소 버튼 스타일
-  CancelButton: styled.button`
+  // 제출 버튼 스타일
+  SubmitButton: styled.button<ISubmitButtonProps>`
     width: 179px;
     height: 52px;
-    background-color: #bdbdbd;
     border: none;
     font-size: 16px;
     font-weight: 500;
-    margin-left: 12px;
-    margin-right: 12px;
+    margin: 0px 12px;
     cursor: pointer;
-  `,
-  // 제출 버튼 스타일
-  SubmitButton: styled.button<{ isActive: boolean }>`
-    width: 179px;
-    height: 52px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    font-size: 16px;
-    font-weight: 500;
-    margin-left: 12px;
-    margin-right: 12px;
-    cursor: pointer;
-    background-color: ${(props: ISubmitButtonProps) =>
-      props.isActive ? "yellow" : "grey"};
-    &:active {
-      background-color: white;
-      color: black;
-    }
+    background-color: ${(props) => (props.isActive ? "yellow" : "gray")};
   `,
   // 에러 메시지 스타일
   Error: styled.div`

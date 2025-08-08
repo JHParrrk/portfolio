@@ -1,3 +1,4 @@
+// C:\portfolio\firstapp\src\components\units\board\write\BoardWrite.index.tsx
 import dynamic from "next/dynamic";
 import { Controller } from "react-hook-form";
 import { PF } from "./BoardWrite.styles";
@@ -16,13 +17,15 @@ export default function BoardWrite(props: IBoardWriteProps): JSX.Element {
     errors,
     isValid,
     isOpen,
-    fileUrls, // 이전에 useBoardWrite에서 watch("images")로 가져오던 부분
+    isChanged,
+    fileUrls,
     onSubmit,
     onUpdate,
     onChangeAddressDetail,
     onCompleteAddressSearch,
-    onChangeFileUrls, // 원래 이름
+    onFileSelect,
     toggleModal,
+    setValue,
   } = useBoardWrite({ data: props.data });
 
   return (
@@ -128,7 +131,10 @@ export default function BoardWrite(props: IBoardWriteProps): JSX.Element {
                   key={el || index}
                   index={index}
                   fileUrl={el}
-                  onChangeFileUrls={onChangeFileUrls}
+                  // 만약 fileUrl이 있다면(수정할때) 이걸로 스토리지에 저장되어있는 사진 보여줌
+                  onFileSelect={onFileSelect}
+                  // 앞은 Uploads01에서 사용할 이름 뒤는 useBoardWrite훅에서 정의된 실제 함수 이름
+                  setValue={setValue} // setValue를 Uploads01에 전달
                 />
               ))}
             </PF.ImageBox>
@@ -153,7 +159,11 @@ export default function BoardWrite(props: IBoardWriteProps): JSX.Element {
           </PF.OptionWrapper>
 
           <PF.ButtonWrapper>
-            <PF.SubmitButton type="submit" isActive={props.isEdit || isValid}>
+            <PF.SubmitButton
+              type="submit"
+              isActive={props.isEdit ? isChanged : isValid}
+              disabled={props.isEdit ? !isChanged : !isValid}
+            >
               {props.isEdit ? "수정하기" : "등록하기"}
             </PF.SubmitButton>
           </PF.ButtonWrapper>
