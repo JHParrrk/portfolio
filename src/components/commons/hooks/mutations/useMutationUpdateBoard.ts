@@ -64,3 +64,23 @@ export const useMutationUpdateBoard = () => {
 
   return mutation;
 };
+
+/*
+export const formerUPDATE_BOARD = gql`
+  mutation updateBoard(
+      updateBoardInput: $updateBoardInput
+    ) {
+      _id
+    }
+  }
+`;
+
+export const formeruseMutationUpdateBoard = () => {
+  const mutation = useMutation<
+    Pick<IMutation, "updateBoard">,
+    IMutationUpdateBoardArgs
+  >(UPDATE_BOARD);
+
+  return mutation;
+};
+*/

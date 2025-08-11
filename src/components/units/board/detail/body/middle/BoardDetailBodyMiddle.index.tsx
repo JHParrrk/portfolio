@@ -9,35 +9,6 @@ export default function BoardDetailBodyMiddle(props: IBoardDetailBodyProps) {
     boardId,
   });
 
-  console.log(
-    "BoardDetailBodyMiddle: fetchBoard data:",
-    props.data?.fetchBoard
-  );
-  console.log(
-    "BoardDetailBodyMiddle: fetchBoard title:",
-    props.data?.fetchBoard?.title
-  );
-  console.log(
-    "BoardDetailBodyMiddle: fetchBoard images:",
-    props.data?.fetchBoard?.images
-  );
-  console.log(
-    "BoardDetailBodyMiddle: fetchBoard contents:",
-    props.data?.fetchBoard?.contents
-  );
-  console.log(
-    "BoardDetailBodyMiddle: fetchBoard writer:",
-    props.data?.fetchBoard?.writer
-  );
-  console.log(
-    "BoardDetailBodyMiddle: fetchBoard createdAt:",
-    props.data?.fetchBoard?.createdAt
-  );
-  console.log(
-    "BoardDetailBodyMiddle: fetchBoard updatedAt:",
-    props.data?.fetchBoard?.updatedAt
-  );
-
   return (
     <BDBM.Body>
       <BDBM.Title>{props.data?.fetchBoard?.title}</BDBM.Title>

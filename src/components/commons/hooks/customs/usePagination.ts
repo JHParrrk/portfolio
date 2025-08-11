@@ -1,6 +1,6 @@
 import { ApolloQueryResult } from "@apollo/client";
 import { MouseEvent, useState } from "react";
-import { IQuery } from "../../../../commons/types/generated/types";
+import { IQuery } from "@/src/commons/types/generated/types";
 
 interface IUsePaginationArgs {
   count: number | undefined;

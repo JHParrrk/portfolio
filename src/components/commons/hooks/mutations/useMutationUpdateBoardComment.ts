@@ -2,7 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import {
   IMutation,
   IMutationUpdateBoardCommentArgs,
-} from "../../../../commons/types/generated/types";
+} from "@/src/commons/types/generated/types";
 
 export const UPDATE_BOARD_COMMENT = gql`
   mutation updateBoardComment(

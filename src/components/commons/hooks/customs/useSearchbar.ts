@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import _ from "lodash";
 import { ApolloQueryResult } from "@apollo/client";
-import { IQuery } from "../../../../commons/types/generated/types";
+import { IQuery } from "@/src/commons/types/generated/types";
 
 interface IUseSearchbarArgs {
   refetch: (
