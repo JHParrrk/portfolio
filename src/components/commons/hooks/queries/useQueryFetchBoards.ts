@@ -1,8 +1,10 @@
+// src/commons/hooks/queries/useQueryFetchBoards.ts
+
 import { gql, useQuery } from "@apollo/client";
 import {
   IQuery,
   IQueryFetchBoardsArgs,
-} from "@/src//commons/types/generated/types";
+} from "@/src/commons/types/generated/types";
 
 export const FETCH_BOARDS = gql`
   query fetchBoards($page: Int, $search: String) {
@@ -15,10 +17,13 @@ export const FETCH_BOARDS = gql`
   }
 `;
 
-export const useQueryFetchBoards = () => {
+export const useQueryFetchBoards = (variables: IQueryFetchBoardsArgs) => {
+  // <== variables를 인자로 받도록 수정
   const query = useQuery<Pick<IQuery, "fetchBoards">, IQueryFetchBoardsArgs>(
-    FETCH_BOARDS
+    FETCH_BOARDS,
+    {
+      variables, // <== 받은 variables를 useQuery에 전달
+    }
   );
-
   return query;
 };

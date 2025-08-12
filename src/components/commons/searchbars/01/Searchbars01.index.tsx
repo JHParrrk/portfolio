@@ -12,6 +12,7 @@ export default function Searchbars01(props: ISearchbars01Props): JSX.Element {
       <SearchbarInput
         placeholder="검색어를 입력해 주세요."
         onChange={props.onChangeSearchbar}
+        value={props.keyword}
       />
     </Searchbar>
   );

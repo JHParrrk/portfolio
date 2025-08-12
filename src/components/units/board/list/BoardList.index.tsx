@@ -1,3 +1,5 @@
+// BoardList.tsx
+
 import styled from "@emotion/styled";
 import { usePagination } from "../../../commons/hooks/customs/usePagination";
 import { useSearchbar } from "../../../commons/hooks/customs/useSearchbar";
@@ -8,6 +10,7 @@ import BoardListFooter from "./footer/BoardListFooter.index";
 import BoardListHeader from "./header/BoardListHeader.index";
 import { useQueryFetchBoards } from "../../../commons/hooks/queries/useQueryFetchBoards";
 import { useQueryFetchBoardsCount } from "../../../commons/hooks/queries/useQueryFetchBoardsCount";
+import { useRouter } from "next/router";
 
 export const Wrapper = styled.div`
   width: 1200px;
@@ -15,14 +18,23 @@ export const Wrapper = styled.div`
 `;
 
 export default function BoardList() {
-  const { data, refetch } = useQueryFetchBoards();
-  const { data: dataBoardsCount, refetch: refetchBoardsCount } =
-    useQueryFetchBoardsCount();
+  const router = useRouter();
 
-  // usePagination이 URL에서 초기 상태를 읽고 초기화합니다.
+  // URL에서 page와 search 변수를 읽어와 초기 게시물 목록을 가져옴
+  const { data, refetch } = useQueryFetchBoards({
+    page: router.query.page ? Number(router.query.page) : 1,
+    search: router.query.search as string,
+  });
+
+  // URL의 search 변수를 기반으로 검색 결과의 총 개수를 가져옴
+  const { data: dataBoardsCount, refetch: refetchBoardsCount } =
+    useQueryFetchBoardsCount({
+      search: router.query.search as string,
+    });
+
   const paginationArgs = usePagination({
     refetch,
-    count: dataBoardsCount?.fetchBoardsCount,
+    count: dataBoardsCount?.fetchBoardsCount, // 검색 결과 총 개수를 pagination에 전달
   });
 
   const { keyword, onChangeSearchbar } = useSearchbar({
@@ -33,14 +45,12 @@ export default function BoardList() {
   return (
     <Wrapper>
       <BoardListHeader>
-        {/* 검색 바 */}
-        <Searchbars01 onChangeSearchbar={onChangeSearchbar} />
+        <Searchbars01
+          onChangeSearchbar={onChangeSearchbar}
+          keyword={keyword} // useSearchbar의 keyword 상태를 Searchbars01 컴포넌트의 value로 전달
+        />
       </BoardListHeader>
-
-      {/* 검색된 데이터를 기반으로 목록 표시 */}
       <BoardListBody data={data} keyword={keyword} />
-
-      {/* 페이지네이션 */}
       <BoardListFooter>
         <Paginations01 {...paginationArgs} />
       </BoardListFooter>
