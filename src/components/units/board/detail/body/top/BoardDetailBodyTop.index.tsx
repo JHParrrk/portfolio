@@ -1,5 +1,5 @@
 import { Tooltip } from "antd";
-import { getDate } from "../../../../../../commons/libraries/utils";
+import { getDate } from "@/src/commons/libraries/utils/dateUtile";
 import { IBoardDetailBodyProps } from "../middle/BoardDetailBodyMiddle.types";
 import { BDBT } from "./BoardDetailBodyTop.styles";
 
