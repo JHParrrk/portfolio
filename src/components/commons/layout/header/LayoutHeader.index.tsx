@@ -1,25 +1,14 @@
 import { LH } from "./LayoutHeader.styles";
-import { useMoveToPage } from "../../hooks/customs/useMoveToPage";
+import { useMoveToPage } from "@/src/components/commons/hooks/customs/useMoveToPage";
+import { useQueryFetchUserLoggedIn } from "@/src/components/commons/hooks/queries/useQueryFetchUserLoggedIn";
+import { useLogout } from "@/src/components/commons/hooks/customs/useLogout";
 import { useRecoilState } from "recoil";
 import { accessTokenState } from "@/src/commons/stores";
-import { useEffect } from "react";
-import { useQueryFetchUserLoggedIn } from "@/src/components/commons/hooks/queries/useQueryFetchUserLoggedIn";
-import { useLogout } from "./../../hooks/customs/useLogout";
 
 export default function LayoutHeader(): JSX.Element {
   const { onClickMoveToPage } = useMoveToPage();
   const { onLogout } = useLogout();
-
-  // Recoil state로 accessToken 관리
-  const [token, setToken] = useRecoilState(accessTokenState);
-
-  // 클라이언트 사이드에서만 localStorage 접근
-  useEffect(() => {
-    const storedToken = localStorage.getItem("accessToken");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, [setToken]);
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState); // Recoil state로 accessToken 관리
 
   // useQueryFetchUserLoggedIn 훅을 사용하여 데이터 가져오기
   const { data } = useQueryFetchUserLoggedIn();
@@ -31,7 +20,7 @@ export default function LayoutHeader(): JSX.Element {
           💎 LIVE
         </LH.InnerLogo>
         <div>
-          {token ? (
+          {accessToken ? (
             <>
               <LH.InnerButton onClick={onClickMoveToPage("/mypages")}>
                 {data?.fetchUserLoggedIn?.name ?? "사용자"}님 환영합니다.

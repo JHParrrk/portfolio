@@ -5,6 +5,8 @@ import { PF } from "./BoardWrite.styles";
 import { useBoardWrite } from "@/src/components/commons/hooks/customs/useBoardWrite";
 import { IBoardWriteProps } from "./BoardWrite.types";
 import Uploads01 from "@/src/components/commons/uploads/01/Uploads01.index";
+import { useRecoilState } from "recoil";
+import { accessTokenState } from "@/src/commons/stores";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
@@ -25,8 +27,10 @@ export default function BoardWrite(props: IBoardWriteProps): JSX.Element {
     onCompleteAddressSearch,
     onFileSelect,
     toggleModal,
-    setValue,
   } = useBoardWrite({ data: props.data });
+
+  // 쓸일이 없음
+  const [accessToken] = useRecoilState(accessTokenState);
 
   return (
     <PF.CustomBody>
@@ -53,7 +57,6 @@ export default function BoardWrite(props: IBoardWriteProps): JSX.Element {
               />
               <PF.Error>{errors.writer?.message}</PF.Error>
             </PF.InputWrapper>
-
             <PF.InputWrapper>
               <PF.Label>비밀번호</PF.Label>
               <PF.Password
@@ -64,7 +67,6 @@ export default function BoardWrite(props: IBoardWriteProps): JSX.Element {
               <PF.Error>{errors.password?.message}</PF.Error>
             </PF.InputWrapper>
           </PF.WriterWrapper>
-
           <PF.InputWrapper>
             <PF.Label>제목</PF.Label>
             <PF.Subject
@@ -134,7 +136,6 @@ export default function BoardWrite(props: IBoardWriteProps): JSX.Element {
                   // 만약 fileUrl이 있다면(수정할때) 이걸로 스토리지에 저장되어있는 사진 보여줌
                   onFileSelect={onFileSelect}
                   // 앞은 Uploads01에서 사용할 이름 뒤는 useBoardWrite훅에서 정의된 실제 함수 이름
-                  setValue={setValue} // setValue를 Uploads01에 전달
                 />
               ))}
             </PF.ImageBox>

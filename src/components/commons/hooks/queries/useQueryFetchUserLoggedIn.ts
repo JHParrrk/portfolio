@@ -5,8 +5,15 @@ import { IQuery } from "../../../../commons/types/generated/types";
 export const FETCH_USER_LOGGED_IN = gql`
   query {
     fetchUserLoggedIn {
+      _id
       email
       name
+      picture
+      userPoint {
+        amount
+      }
+      createdAt
+      updatedAt
     }
   }
 `;

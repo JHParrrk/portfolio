@@ -10,10 +10,15 @@ import {
 } from "@/src/commons/types/generated/types";
 import { useForm } from "react-hook-form";
 import type { Address } from "react-daum-postcode";
-import { ChangeEvent, useState, useEffect, useMemo } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { boardSchema, IFormData } from "@/src/commons/validations/boardSchema";
+import {
+  getBoardSchema,
+  IFormData,
+} from "@/src/commons/validations/boardSchema";
 import { Modal } from "antd";
+import { useRecoilState } from "recoil";
+import { accessTokenState } from "@/src/commons/stores";
 
 export interface IBoardWriteDataProps {
   data?: Pick<IQuery, "fetchBoard">;
@@ -23,7 +28,7 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
   const { data } = props;
   const router = useRouter();
   const isEdit = router.pathname.includes("edit");
-
+  const [accessToken] = useRecoilState(accessTokenState);
   const [isOpen, setIsOpen] = useState(false);
   const toggleModal = () => setIsOpen((prev) => !prev);
 
@@ -37,7 +42,7 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     watch,
     reset,
   } = useForm<IFormData>({
-    resolver: yupResolver(boardSchema),
+    resolver: yupResolver(getBoardSchema({ isEdit })),
     mode: "onChange",
     defaultValues: {
       writer: "",
@@ -106,8 +111,12 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     newFileList[index] = file || null;
     setFileList(newFileList);
     if (file) {
+      // 새로운 파일이 선택되면 해당 images 필드 값을 비워둡니다.
+      // 이는 onUpdate 시 기존 URL이 아닌 새로운 파일이 업로드되었음을 나타냅니다.
       setValue(`images.${index}`, "", { shouldDirty: true });
-      // react-hook-form의 setValue를 사용하여 images 배열의 해당 값들을 빈 문자열로 초기화
+    } else {
+      // 파일이 삭제되면 images 필드도 빈 문자열로 설정하여 서버에 보내지 않도록 합니다.
+      setValue(`images.${index}`, "", { shouldDirty: true });
     }
   };
 
@@ -128,6 +137,14 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     const finalImages = uploadedUrls.filter((url) => url !== "");
     // 2. 서버에 등록
     try {
+      const boardAddress: IBoardAddressInput | undefined =
+        formData.address || formData.zipcode || formData.addressDetail
+          ? {
+              zipcode: formData.zipcode,
+              address: formData.address,
+              addressDetail: formData.addressDetail,
+            }
+          : undefined;
       const result = await createBoard({
         variables: {
           createBoardInput: {
@@ -136,14 +153,7 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
             title: formData.title,
             contents: formData.contents,
             youtubeUrl: formData.youtubeUrl,
-            boardAddress:
-              formData.address || formData.zipcode || formData.addressDetail
-                ? {
-                    zipcode: formData.zipcode,
-                    address: formData.address,
-                    addressDetail: formData.addressDetail,
-                  }
-                : undefined,
+            boardAddress,
             images: finalImages,
           },
         },
@@ -188,6 +198,12 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     // 2. 서버에 수정 요청
     const updateBoardInput: IUpdateBoardInput = {};
 
+    const boardAddress: IBoardAddressInput = {
+      zipcode: formData.zipcode,
+      address: formData.address,
+      addressDetail: formData.addressDetail,
+    };
+
     if (dirtyFields.title) updateBoardInput.title = formData.title;
     if (dirtyFields.contents) updateBoardInput.contents = formData.contents;
     if (dirtyFields.youtubeUrl)
@@ -201,11 +217,7 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
       dirtyFields.address ||
       dirtyFields.addressDetail
     ) {
-      updateBoardInput.boardAddress = {
-        zipcode: formData.zipcode,
-        address: formData.address,
-        addressDetail: formData.addressDetail,
-      };
+      updateBoardInput.boardAddress = boardAddress;
     }
 
     try {
@@ -234,16 +246,17 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
   };
 
   const onCompleteAddressSearch = (data: Address): void => {
-    setValue("zipcode", data.zonecode);
-    setValue("address", data.address);
+    setValue("zipcode", data.zonecode, { shouldDirty: true });
+    setValue("address", data.address, { shouldDirty: true });
     setIsOpen(false);
+    // 슈드덜티트루옵션을 사용해리엑트훅폼이 셋벨류프로그램적입력변경을 사용자가 직접입력한것처럼 인식하도록 만듦
   };
 
   const fileUrls = watch("images") || ["", "", ""];
   const isChanged = isDirty || fileList.some((file) => file !== null);
-  console.log("isDirty:", isDirty);
-  console.log("fileList:", fileList);
-  console.log("isChanged:", isChanged);
+  // console.log("isDirty:", isDirty);
+  // console.log("fileList:", fileList);
+  // console.log("isChanged:", isChanged);
 
   return {
     register,
@@ -260,6 +273,5 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     isOpen,
     fileUrls,
     toggleModal,
-    setValue,
   };
 };

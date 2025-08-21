@@ -4,6 +4,9 @@ import LayoutHeader from "./header/LayoutHeader.index"; // 헤더
 import LayoutNavigation from "./navigation/LayoutNavigation.index"; // 네비게이션
 import styled from "@emotion/styled"; // Emotion 스타일링
 import { useRouter } from "next/router"; // 현재 경로 확인
+import { useRecoilState } from "recoil";
+import { useEffect } from "react";
+import { accessTokenState } from "@/src/commons/stores";
 
 // Body 컴포넌트에 조건부 스타일을 적용하기 위한 props 타입
 interface IBodyProps {
@@ -34,12 +37,21 @@ interface ILayoutProps {
 // Layout 컴포넌트 정의
 export default function Layout(props: ILayoutProps): JSX.Element {
   const router = useRouter();
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState); // Recoil state로 accessToken 관리
+
+  // 클라이언트 사이드에서만 localStorage 접근
+  useEffect(() => {
+    const storedToken = localStorage.getItem("accessToken");
+    if (storedToken) {
+      setAccessToken(storedToken);
+    }
+  }, [setAccessToken]);
+  // 로그인상태관리
 
   // 로그인 또는 회원가입 페이지일 경우 헤더/배너/네비게이션 숨김
   const isHiddenHeader = /^\/(login|signup)/.test(router.asPath);
   // // 현재 경로가 HIDDEN_HEADERS에 포함되어 있으면 true
   // const isHiddenHeader = HIDDEN_HEADERS[router.pathname] === true;
-
   return (
     <>
       {/* 조건부 렌더링: 로그인/회원가입 페이지가 아니면 보여줌 */}

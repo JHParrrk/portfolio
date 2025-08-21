@@ -3,15 +3,17 @@
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 // 커스텀 훅과 하위 컴포넌트들을 import 합니다.
-import { usePagination } from "../../../commons/hooks/customs/usePagination";
-import { useSearchbar } from "../../../commons/hooks/customs/useSearchbar";
-import Paginations01 from "../../../commons/paginations/01/Paginations01.index";
+import { usePagination } from "@/src/components/commons/hooks/customs/usePagination";
+import { useSearchbar } from "@/src/components/commons/hooks/customs/useSearchbar";
+import Paginations01 from "@/src/components/commons/paginations/01/Paginations01.index";
 import Searchbars01 from "@/src/components/commons/searchbars/01/Searchbars01.index";
 import BoardListBody from "./body/BoardListBody.index";
 import BoardListFooter from "./footer/BoardListFooter.index";
 import BoardListHeader from "./header/BoardListHeader.index";
-import { useQueryFetchBoards } from "../../../commons/hooks/queries/useQueryFetchBoards";
-import { useQueryFetchBoardsCount } from "../../../commons/hooks/queries/useQueryFetchBoardsCount";
+import BoardBestCard from "@/src/components/units/board/best/BoardBestCard.index";
+import { useQueryFetchBoards } from "@/src/components/commons/hooks/queries/useQueryFetchBoards";
+import { useQueryFetchBoardsCount } from "@/src/components/commons/hooks/queries/useQueryFetchBoardsCount";
+import { useQueryFetchBoardsOfTheBest } from "@/src/components/commons/hooks/queries/useQueryFetchBoardsOfTheBest";
 import { BLB } from "./body/BoardListBody.styles";
 
 // 전체를 감싸는 Wrapper 스타일 컴포넌트입니다.
@@ -55,6 +57,12 @@ export default function BoardList() {
     shallow: true,
   });
 
+  const {
+    data: dataBest,
+    loading: loadingBest,
+    error: errorBest,
+  } = useQueryFetchBoardsOfTheBest();
+
   return (
     <Wrapper>
       {/* 헤더 영역: 검색창이 위치합니다. */}
@@ -65,6 +73,11 @@ export default function BoardList() {
         />
       </BoardListHeader>
       {/* 바디 영역: 실제 게시물 목록이 표시됩니다. */}
+      {/* 💡 베스트 게시글 컴포넌트를 이 위치에 추가합니다. */}
+      {/* 로딩 및 오류 상태를 처리하고, 데이터가 있을 때만 렌더링합니다. */}
+      {loadingBest && <div>베스트 게시글 로딩 중...</div>}
+      {errorBest && <div>베스트 게시글을 불러오는 데 실패했습니다.</div>}
+      {dataBest && <BoardBestCard data={dataBest} />}
       <BLB.BodyWrapper>
         <BoardListBody data={data} keyword={keyword} />
       </BLB.BodyWrapper>

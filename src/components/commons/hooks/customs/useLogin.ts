@@ -9,6 +9,7 @@ import { accessTokenState } from "@/src/commons/stores"; // accessToken을 저�
 import { Modal } from "antd";
 // 페이지 이동을 추상화한 커스텀 훅
 import { useMoveToPage } from "@/src/components/commons/hooks/customs/useMoveToPage";
+import { useEffect } from "react";
 
 // 폼 입력값 타입 정의
 interface IFormInput {
@@ -28,6 +29,10 @@ export const useLogin = () => {
   // 페이지 이동 함수 가져오기
   const { onClickMoveToPage } = useMoveToPage();
 
+  useEffect(() => {
+    console.log("Recoil accessToken 상태 변경:", accessToken);
+  }, [accessToken]);
+
   // react-hook-form의 useForm 훅 사용
   const {
     register, // 입력 필드 등록 함수
@@ -38,28 +43,34 @@ export const useLogin = () => {
   // 폼 제출 시 실행되는 함수 (유효성 검사 통과 후 실행됨)
   const handleLoginSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      // 로그인 mutation 실행
+      // 이 부분을 추가해주세요 ➡️
+      console.log("--- 로그인 시작 ---");
+
       const result = await loginUser({
         variables: {
           email: data.email,
           password: data.password,
         },
       });
-
-      // 응답에서 accessToken 추출
       const token = result.data?.loginUser.accessToken;
 
-      // accessToken을 recoil 상태와 localStorage에 저장
       setAccessToken(token || "");
       localStorage.setItem("accessToken", token || "");
 
-      // 로그인 성공 알림
-      alert("환영합니다!");
+      // 이 부분을 추가해주세요 ➡️
+      console.log("accessToken 저장 완료:", token);
 
-      // 마이페이지로 이동
-      onClickMoveToPage("/mypages");
+      Modal.success({
+        content: "환영합니다!",
+        onOk: () => {
+          // 이 부분을 추가해주세요 ➡️
+          console.log("페이지 이동 함수 실행");
+          onClickMoveToPage("/")();
+        },
+      });
     } catch (error) {
-      // 에러 발생 시 모달로 메시지 출력
+      // 이 부분을 추가해주세요 ➡️
+      console.error("로그인 실패:", error);
       if (error instanceof Error) {
         Modal.error({ content: error.message });
       }
@@ -70,7 +81,7 @@ export const useLogin = () => {
   return {
     register, // 입력 필드 등록
     onSubmit: handleSubmit(handleLoginSubmit), // react-hook-form 대응
-    handleSignUpClick: onClickMoveToPage("login/registration"), // 회원가입 페이지 이동 함수
+    handleSignUpClick: onClickMoveToPage("/login/registration"), // 회원가입 페이지 이동 함수
     errors, // 유효성 검사 에러 객체
     isValid, // 전체 폼 유효성 상태
   };

@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { accessTokenState } from "@/src/commons/stores";
-import { useMoveToPage } from "../../hooks/customs/useMoveToPage";
+import { useMoveToPage } from "@/src/components/commons/hooks/customs/useMoveToPage";
 
 export const useLogout = () => {
   const { onClickMoveToPage } = useMoveToPage();
@@ -10,7 +10,8 @@ export const useLogout = () => {
     localStorage.removeItem("accessToken");
     setToken("");
     alert("로그아웃되었습니다.");
-    onClickMoveToPage("/login");
+    // 메인화면으로이동
+    onClickMoveToPage("/");
   };
 
   return { onLogout };

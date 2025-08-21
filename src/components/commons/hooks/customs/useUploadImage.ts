@@ -7,14 +7,9 @@ import { IFormData } from "@/src/commons/validations/boardSchema";
 interface IUseUploadImage {
   onFileSelect: (file: File | undefined, index: number) => void;
   index: number;
-  setValue: UseFormSetValue<IFormData>;
 }
 
-export const useUploadImage = ({
-  onFileSelect,
-  index,
-  setValue,
-}: IUseUploadImage) => {
+export const useUploadImage = ({ onFileSelect, index }: IUseUploadImage) => {
   const fileRef = useRef<HTMLInputElement>(null);
   const [localFileUrl, setLocalFileUrl] = useState(""); // 로컬 미리보기용 상태
 
@@ -44,7 +39,6 @@ export const useUploadImage = ({
     if (fileRef.current) {
       fileRef.current.value = "";
     }
-    setValue(`images.${index}`, "", { shouldDirty: true });
   };
 
   return {

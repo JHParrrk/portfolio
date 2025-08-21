@@ -12,13 +12,18 @@ export default function Uploads01(props: IUploads01Props): JSX.Element {
     useUploadImage({
       onFileSelect: props.onFileSelect,
       index: props.index,
-      setValue: props.setValue,
     });
   // UpLoads01로 온 onFileSelect함수를 useUploadImage로 전달 index도
 
-  // 로컬에 미리보기 Data URL이 있으면 그것을, 없으면 부모로부터 받은 URL을 사용
+  // 로컬 미리보기 URL이 있으면 그것을 사용
+  // 그렇지 않으면 부모로부터 받은 URL을 사용
   const imageUrl = localFileUrl || props.fileUrl;
-  const imageSrc = imageUrl.startsWith("data:")
+
+  // 💡 수정된 로직: 기본 이미지 경로를 조건에 추가합니다.
+  const isDefaultImage = imageUrl === "/images/avatar.png";
+  const imageSrc = isDefaultImage
+    ? imageUrl
+    : imageUrl.startsWith("data:")
     ? imageUrl
     : `https://storage.googleapis.com/${imageUrl}`;
 

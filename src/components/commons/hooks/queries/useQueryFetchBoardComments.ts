@@ -2,7 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import {
   IQuery,
   IQueryFetchBoardCommentsArgs,
-} from "../../../../commons/types/generated/types";
+} from "@/src/commons/types/generated/types";
 
 export const FETCH_BOARD_COMMENTS = gql`
   query fetchBoardComments($boardId: ID!, $page: Int) {
