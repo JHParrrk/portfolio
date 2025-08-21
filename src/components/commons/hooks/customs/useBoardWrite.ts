@@ -1,8 +1,7 @@
-// C:\portfolio\firstapp\src\components\commons\hooks\customs\useBoardWrite.ts
 import { useRouter } from "next/router";
 import { useMutationCreateBoard } from "@/src/components/commons/hooks/mutations/useMutationCreateBoard";
 import { useMutationUpdateBoard } from "@/src/components/commons/hooks/mutations/useMutationUpdateBoard";
-import { useMutationUploadFile } from "@/src/components/commons/hooks/mutations/useMutationUploadFile";
+import { useMutationUploadFile } from "@/src/components/commons/hooks/mutations/useMutationUpLoadFile";
 import {
   IUpdateBoardInput,
   IBoardAddressInput,
@@ -249,7 +248,8 @@ export const useBoardWrite = (props: IBoardWriteDataProps) => {
     setValue("zipcode", data.zonecode, { shouldDirty: true });
     setValue("address", data.address, { shouldDirty: true });
     setIsOpen(false);
-    // 슈드덜티트루옵션을 사용해리엑트훅폼이 셋벨류프로그램적입력변경을 사용자가 직접입력한것처럼 인식하도록 만듦
+    // shouldDirty: true 옵션을 사용해 react-hook-form이
+    // setValue 프로그램적 입력 변경을 사용자가 직접 입력한 것 처럼 인식하도록 만듦
   };
 
   const fileUrls = watch("images") || ["", "", ""];

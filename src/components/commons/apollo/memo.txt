@@ -1,0 +1,16 @@
+
+  // if (process.browser) {
+  //   console.log("브라우저입니다.");
+  // } else {
+  //   console.log("프론트엔드 서버입니다. 얀데브 프로그램 내부입니다.");
+  // }
+  // if(typeof window !== undefined) {
+  //   console.log("브라우저입니다.")
+  // } else {
+  //   console.log("프론트엔드 서버입니다. 얀데브 프로그램 내부입니다.");
+  // }
+  // 조건문으로 브라우저 일때만 실행하도록 하던가 useEffect 사용
+  // 왜냐하면 localStorage는 브라우저에만 있는데, 서버에서 먼저 화면을
+  // 그려보기 때문에 오류가 발생함
+  // useEffect는 마운트 이후 실행됨
+  // 이거남기는 이유 타입오브 땡땡땡 신기해서

@@ -1,14 +1,20 @@
 // useMoveToPage.ts 파일
 import { useRouter } from "next/router";
-// ... (다른 import)
+import { useRecoilState } from "recoil";
+import { visitedPageState } from "@/src/commons/stores";
 
 export const useMoveToPage = () => {
   const router = useRouter();
+  const [visitedPage, setVisitedPage] = useRecoilState(visitedPageState);
+
   const onClickMoveToPage = (path: string) => () => {
-    // 이 부분을 추가해주세요 ➡️
-    console.log("라우터 이동 요청:", path);
+    // localStorage.setItem("visitedPage", path); // 로컬스토리지에 저장방법
+    setVisitedPage(path);
     void router.push(path);
   };
 
-  return { onClickMoveToPage };
+  return {
+    visitedPage,
+    onClickMoveToPage,
+  };
 };

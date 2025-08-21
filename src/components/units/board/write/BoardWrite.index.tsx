@@ -135,6 +135,7 @@ export default function BoardWrite(props: IBoardWriteProps): JSX.Element {
                   fileUrl={el}
                   // 만약 fileUrl이 있다면(수정할때) 이걸로 스토리지에 저장되어있는 사진 보여줌
                   onFileSelect={onFileSelect}
+                  showDeleteButton={true}
                   // 앞은 Uploads01에서 사용할 이름 뒤는 useBoardWrite훅에서 정의된 실제 함수 이름
                 />
               ))}

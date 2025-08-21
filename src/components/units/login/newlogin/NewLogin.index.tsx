@@ -52,12 +52,12 @@ export default function NewLogin(): JSX.Element {
           </NL.InputWrapper>
           <NL.CheckboxWrapper>
             {/* 체크박스 등록 (검증이 필요없으면 rules 생략) */}
-            <NL.Checkbox
+            {/* <NL.Checkbox
               type="checkbox"
               {...register("keepLoggedIn")}
               id="keepLoggedIn"
-            />
-            <label htmlFor="keepLoggedIn">로그인 상태 유지</label>
+            /> */}
+            {/* <label htmlFor="keepLoggedIn">로그인 상태 유지</label> */}
           </NL.CheckboxWrapper>
           {/* 버튼은 폼 전체 유효성에 따라 색상이 달라집니다 */}
           <NL.Button type="submit" isActive={isValid}>

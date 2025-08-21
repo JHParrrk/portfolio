@@ -61,12 +61,14 @@ export const MYP = {
     font-size: 24px;
     color: #888;
   `,
-  
+
   // 💡 프로필 사진 영역과 버튼 스타일 추가
   ProfileSection: styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; // 가로축 중앙 정렬
+    justify-content: center; // 세로축 중앙 정렬
+    gap: 15px; // 🚨 자식 요소 간의 간격 추가
     margin-bottom: 30px;
   `,
 

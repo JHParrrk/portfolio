@@ -1,10 +1,9 @@
-import { useMoveToPage } from "../../../../commons/hooks/customs/useMoveToPage";
+import { useMoveToPage } from "@/src/components/commons/hooks/customs/useMoveToPage";
 import { BLF } from "./BoardListFooter.styles";
 
 export default function BoardListFooter(props: IBoardListFooterProps) {
   const { onClickMoveToPage } = useMoveToPage();
 
-  // boardWrite만들고 BoardId있으면 수정하기 이렇게 할까?
   return (
     <BLF.Footer>
       <>{props.children}</>

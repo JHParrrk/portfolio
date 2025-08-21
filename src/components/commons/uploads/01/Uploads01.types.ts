@@ -5,4 +5,5 @@ export interface IUploads01Props {
   fileUrl: string;
   index: number;
   onFileSelect: (file: File | undefined, index: number) => void;
+  showDeleteButton: boolean;
 }
