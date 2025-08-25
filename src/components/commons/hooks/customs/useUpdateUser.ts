@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Modal } from "antd";
 import { useMutationUpdateUser } from "@/src/components/commons/hooks/mutations/useMutationUpdateUser";
-import { useMutationUploadFile } from "@/src/components/commons/hooks/mutations/useMutationUpLoadFile";
+import { useMutationUploadFile } from "@/src/components/commons/hooks/mutations/useMutationUploadFile";
 import { useQueryFetchUserLoggedIn } from "@/src/components/commons/hooks/queries/useQueryFetchUserLoggedIn";
 
 export const useUpdateUser = () => {

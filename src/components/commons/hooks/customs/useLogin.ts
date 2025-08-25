@@ -50,12 +50,12 @@ export const useLogin = () => {
       // ⭐ 이 줄을 삭제합니다. ⭐
       // localStorage.setItem("accessToken", token || "");
 
-      console.log("accessToken 저장 완료:", token);
+      // console.log("accessToken 저장 완료:", token);
 
       Modal.success({
         content: "환영합니다!",
         onOk: () => {
-          console.log("페이지 이동 함수 실행");
+          // console.log("페이지 이동 함수 실행");
           onClickMoveToPage("/")();
         },
       });

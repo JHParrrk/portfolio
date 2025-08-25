@@ -6,13 +6,21 @@ import { ApolloQueryResult } from "@apollo/client";
 import { useRouter } from "next/router";
 import { asSingle } from "@/src/commons/libraries/utils/router";
 
-interface UseSearchbarArgs<TQuery, TVars extends { page?: number; search?: string }> {
+interface UseSearchbarArgs<
+  TQuery,
+  TVars extends { page?: number; search?: string }
+> {
   refetch: (variables?: Partial<TVars>) => Promise<ApolloQueryResult<TQuery>>;
-  refetchCount: (variables?: Partial<TVars>) => Promise<ApolloQueryResult<any>>;
+  refetchCount?: (
+    variables?: Partial<TVars>
+  ) => Promise<ApolloQueryResult<any>>;
   shallow?: boolean;
 }
 
-export const useSearchbar = <TQuery, TVars extends { page?: number; search?: string }>(
+export const useSearchbar = <
+  TQuery,
+  TVars extends { page?: number; search?: string }
+>(
   args: UseSearchbarArgs<TQuery, TVars>
 ) => {
   const router = useRouter();
@@ -35,7 +43,7 @@ export const useSearchbar = <TQuery, TVars extends { page?: number; search?: str
     () =>
       _.debounce((value: string) => {
         void refetchRef.current({ search: value, page: 1 } as Partial<TVars>);
-        void refetchCountRef.current({ search: value } as Partial<TVars>);
+        void refetchCountRef.current?.({ search: value } as Partial<TVars>);
         void router.replace(
           {
             pathname: router.pathname,

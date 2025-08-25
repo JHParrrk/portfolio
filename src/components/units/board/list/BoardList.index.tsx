@@ -65,6 +65,11 @@ export default function BoardList() {
 
   return (
     <Wrapper>
+      {/* 💡 베스트 게시글 컴포넌트를 이 위치에 추가합니다. */}
+      {/* 로딩 및 오류 상태를 처리하고, 데이터가 있을 때만 렌더링합니다. */}
+      {loadingBest && <div>베스트 게시글 로딩 중...</div>}
+      {errorBest && <div>베스트 게시글을 불러오는 데 실패했습니다.</div>}
+      {dataBest && <BoardBestCard data={dataBest} />}
       {/* 헤더 영역: 검색창이 위치합니다. */}
       <BoardListHeader>
         <Searchbars01
@@ -73,11 +78,6 @@ export default function BoardList() {
         />
       </BoardListHeader>
       {/* 바디 영역: 실제 게시물 목록이 표시됩니다. */}
-      {/* 💡 베스트 게시글 컴포넌트를 이 위치에 추가합니다. */}
-      {/* 로딩 및 오류 상태를 처리하고, 데이터가 있을 때만 렌더링합니다. */}
-      {loadingBest && <div>베스트 게시글 로딩 중...</div>}
-      {errorBest && <div>베스트 게시글을 불러오는 데 실패했습니다.</div>}
-      {dataBest && <BoardBestCard data={dataBest} />}
       <BLB.BodyWrapper>
         <BoardListBody data={data} keyword={keyword} />
       </BLB.BodyWrapper>

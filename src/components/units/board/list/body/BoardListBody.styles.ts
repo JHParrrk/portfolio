@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import { ITextTokenProps } from "./BoardListBody.types";
 
 export const BLB = {
-  // BodyWrapper에 CSS 변수를 선언합니다.
   BodyWrapper: styled.div`
     --row-height: 52px;
     --border-height: 1px;
@@ -15,9 +14,9 @@ export const BLB = {
      * 게시물 목록 10개 기준: TableTop + 헤더 행 1개 + 게시물 행 10개 + TableBottom
      */
     min-height: calc(
-      var(--table-top-margin) + var(--table-top-border) + 
-      (var(--row-height) + var(--border-height)) * 11 + /* 헤더 1개 + 게시물 10개 */
-      var(--table-bottom-border)
+      var(--table-top-margin) + var(--table-top-border) +
+        (var(--row-height) + var(--border-height)) * 11 +
+        /* 헤더 1개 + 게시물 10개 */ var(--table-bottom-border)
     );
   `,
 

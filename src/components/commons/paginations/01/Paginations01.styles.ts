@@ -1,3 +1,4 @@
+//pagination01.styles
 import styled from "@emotion/styled";
 
 interface IPageProps {
