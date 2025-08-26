@@ -11,6 +11,21 @@ export const CREATE_BOARD = gql`
       writer
       title
       createdAt
+      updatedAt
+      youtubeUrl
+      likeCount
+      dislikeCount
+      images
+      boardAddress {
+        zipcode
+        address
+        addressDetail
+      }
+      user {
+        _id
+        email
+        name
+      }
     }
   }
 `;
@@ -23,7 +38,6 @@ export const useMutationCreateBoard = () => {
     update(cache, { data }) {
       const newBoard = data?.createBoard;
       if (!newBoard) return;
-
       // 1. fetchBoards 쿼리의 모든 캐시에 새로운 게시글을 추가합니다.
       // fetchBoards 필드에 대한 캐시를 수정합니다.
       cache.modify({

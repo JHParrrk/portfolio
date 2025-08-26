@@ -5,15 +5,6 @@ export const Wrapper = styled.div`
   margin: 80px auto; /* 상단 여백 살짝 조정 */
 `;
 
-export const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px; /* 목록과의 간격을 더 줌 */
-  padding-bottom: 20px; /* 헤더 영역 하단에 여백 추가 */
-  border-bottom: 2px solid #000; /* 헤더와 목록을 구분하는 라인 */
-`;
-
 export const ToggleWrapper = styled.div`
   display: flex;
   gap: 12px;
@@ -51,7 +42,7 @@ export const ListWrapper = styled.div`
 
   border-top: 1px solid #dbdbdb;
   border-bottom: 1px solid #dbdbdb;
-  margin-bottom: 40px; /* 페이지네이션과의 간격 확보 */
+  margin-bottom: 1px; /* 페이지네이션과의 간격 확보 */
 
   /* 스크롤바 디자인 (선택 사항) */
   &::-webkit-scrollbar {

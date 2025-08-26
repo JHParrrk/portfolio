@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import {
   IQuery,
   IQueryFetchBoardArgs,
-} from "../../../../commons/types/generated/types";
+} from "@/src/commons/types/generated/types";
 
 export const FETCH_BOARD = gql`
   query fetchBoard($boardId: ID!) {
