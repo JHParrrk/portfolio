@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { useQueryIdChecker } from "@/src/components/commons/hooks/customs/useQueryIdChecker";
 import { useQueryFetchUsedItem } from "@/src/components/commons/hooks/queries/ustQueryFetchUsedItem";
 import MarketDetailBodyBottom from "./bottom/MarketDetailBodyBottom.index";
-// import MarketDetailBodyMiddle from "./middle/MarketDetailBodyMiddle.index";
+import MarketDetailBodyMiddle from "./middle/MarketDetailBodyMiddle.index";
 import MarketDetailBodyTop from "./top/MarketDetailBodyTop.index";
 
 const CardWrapper = styled.div`
@@ -29,7 +29,7 @@ export default function MarketDetailBody() {
   return (
     <CardWrapper>
       <MarketDetailBodyTop data={data} />
-      {/* <MarketDetailBodyMiddle data={data} /> */}
+      <MarketDetailBodyMiddle data={data} />
       <MarketDetailBodyBottom />
     </CardWrapper>
   );

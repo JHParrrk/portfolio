@@ -9,7 +9,7 @@ export default function MarketDetailBodyTop(props: IMarketDetailBodyProps) {
       <MDBT.AvatarWrapper>
         <MDBT.Avatar src="/images/avatar.png" />
         <MDBT.Info>
-          <MDBT.Seller>{props.data?.fetchUseditem?.seller}</MDBT.Seller>
+          <MDBT.Seller>{props.data?.fetchUseditem?.seller?.name}</MDBT.Seller>
           <MDBT.CreatedAt>
             {getDate(props.data?.fetchUseditem?.createdAt)}
           </MDBT.CreatedAt>
