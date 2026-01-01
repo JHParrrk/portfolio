@@ -2,22 +2,22 @@ import { atom, selector } from "recoil";
 import { getAccessToken } from "@/src/commons/libraries/getAccessToken";
 
 // export const isEditState = atom({
-//   key: "isEditState",
+//   key: `isEditState/${Math.random()}`,
 //   default: true,
 // });
 
 export const accessTokenState = atom({
-  key: "accessTokenState",
+  key: `accessTokenState/${Math.random()}`,
   default: "",
 });
 
 export const visitedPageState = atom({
-  key: "visitedPageState",
+  key: `visitedPageState/${Math.random()}`,
   default: "",
 });
 
 export const restoreAccessTokenLoadable = selector({
-  key: "restoreAccessTokenLoadable",
+  key: `restoreAccessTokenLoadable/${Math.random()}`,
   get: async () => {
     try {
       const newAccessToken = await getAccessToken();

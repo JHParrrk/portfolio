@@ -9,15 +9,57 @@ export const MDBM = {
   Body: styled.div`
     width: 100%;
     min-height: 800px;
+    padding: 20px;
+    background-color: #ffffff; /* White background for a clean look */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 10px; /* Rounded corners for a modern feel */
   `,
 
   Title: styled.h1`
-    padding-top: 80px;
+    font-size: 36px;
+    font-weight: bold;
+    padding-top: 20px;
+    color: #333333; /* Darker text for better readability */
+  `,
+
+  Remarks: styled.div`
+    font-size: 18px;
+    color: #757575; /* Softer gray for secondary text */
+    padding-top: 4px;
+  `,
+
+  Price: styled.div`
+    font-size: 36px;
+    font-weight: bold;
+    padding-top: 8px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #e0e0e0; /* Lighter border for a cleaner look */
+    width: 100%;
+    color: #ff5722; /* Highlight price with a vibrant color */
   `,
 
   Contents: styled.div`
     padding-top: 40px;
-    padding-bottom: 120px;
+    padding-bottom: 40px;
+    line-height: 1.8; /* Increased line height for better readability */
+    color: #424242; /* Neutral dark gray for content */
+  `,
+
+  Tags: styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #e0e0e0;
+    width: 100%;
+  `,
+
+  Tag: styled.span`
+    color: #616161; /* Neutral gray for tags */
+    font-size: 16px;
+    background-color: #f5f5f5; /* Light background for tags */
+    padding: 5px 10px;
+    border-radius: 5px; /* Rounded corners for tags */
   `,
 
   // =================================================
@@ -25,37 +67,42 @@ export const MDBM = {
   // =================================================
   CarouselWrapper: styled.div`
     width: 100%;
-    max-width: 600px; /* 캐러셀 전체 최대 너비 */
-    margin: 30px auto; /* 위아래 여백 및 가운데 정렬 */
+    max-width: 600px;
+    margin: 30px auto;
+    background-color: #fafafa; /* Light background for carousel */
+    border-radius: 10px;
+    padding: 10px;
 
-    /* react-slick 라이브러리 클래스 커스터마이징 */
     .slick-prev::before,
     .slick-next::before {
       font-size: 30px;
-      color: #aaa;
+      color: #9e9e9e; /* Softer gray for arrows */
     }
-    
+
     .slick-prev {
-      left: -40px; /* 왼쪽 화살표 위치 */
+      left: -40px;
     }
 
     .slick-next {
-      right: -40px; /* 오른쪽 화살표 위치 */
+      right: -40px;
     }
 
     .slick-dots li button:before {
-      color: #ddd;
+      color: #bdbdbd;
     }
 
     .slick-dots li.slick-active button:before {
-      color: #ffd600; /* 활성화된 점 색상 */
+      color: #ff5722; /* Highlight active dot */
     }
   `,
 
   MainImageWrapper: styled.div`
     position: relative;
     width: 100%;
-    padding-top: 100%; /* 1:1 비율 정사각형을 만들기 위한 트릭 */
+    padding-top: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #eeeeee; /* Neutral background for images */
   `,
 
   Image: styled.img`
@@ -64,13 +111,17 @@ export const MDBM = {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* 이미지가 Wrapper에 꽉 차도록 */
+    object-fit: contain;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+      transform: scale(1.1); /* Slightly larger hover effect */
+    }
   `,
 
   ThumbnailSliderWrapper: styled.div`
     margin-top: 20px;
-    
-    /* 썸네일 슬라이더의 각 아이템에 좌우 여백을 주어 잘리지 않게 함 */
+
     .slick-slide {
       padding: 0 5px;
     }
@@ -78,14 +129,13 @@ export const MDBM = {
 
   ThumbnailImageWrapper: styled.div`
     cursor: pointer;
-    border: 3px solid transparent; /* 평상시 테두리는 투명 */
+    border: 3px solid transparent;
     border-radius: 5px;
     overflow: hidden;
-    transition: border-color 0.3s; /* 테두리 색상 변경 시 부드러운 효과 */
+    transition: border-color 0.3s;
 
-    /* 현재 선택된 썸네일(.slick-current)의 Wrapper에 스타일 적용 */
     .slick-current & {
-      border-color: #ffd600; /* 활성화 시 노란색 테두리 */
+      border-color: #ff5722; /* Highlight active thumbnail */
     }
   `,
 
@@ -93,7 +143,7 @@ export const MDBM = {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block; /* 이미지 하단 여백 제거 */
+    display: block;
   `,
 
   // =================================================
@@ -104,7 +154,7 @@ export const MDBM = {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 20px; /* 아이콘 그룹 간의 간격 */
+    gap: 20px;
   `,
 
   IconWrapper: styled.div`
@@ -115,24 +165,24 @@ export const MDBM = {
 
   LikeIcon: styled(LikeOutlined)`
     font-size: 24px;
-    color: #ffd600;
+    color: #ff5722; /* Vibrant color for like icon */
     cursor: pointer;
   `,
 
   DislikeIcon: styled(DislikeOutlined)`
     font-size: 24px;
-    color: #828282;
+    color: #9e9e9e; /* Softer gray for dislike icon */
     cursor: pointer;
   `,
 
   LikeCount: styled.div`
     padding-top: 4px;
-    color: #ffd600;
+    color: #ff5722;
   `,
 
   DislikeCount: styled.div`
     padding-top: 4px;
-    color: #828282;
+    color: #9e9e9e;
   `,
 
   // =================================================
@@ -140,5 +190,7 @@ export const MDBM = {
   // =================================================
   Youtube: styled(ReactPlayer)`
     margin: auto;
+    border-radius: 10px; /* Rounded corners for video player */
+    overflow: hidden;
   `,
 };
