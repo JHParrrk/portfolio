@@ -1,4 +1,4 @@
-import MarketWrite from "@/src/components/units/market/write/MarketWrite.index";
+import MarketWrite from '@/features/market/ui/write/MarketWrite.index';
 
 const MarketNewPage = () => {
   const props = {

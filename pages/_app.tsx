@@ -1,22 +1,22 @@
-import ApolloSettings from "@/src/components/commons/apollo";
-import Layout from "@/src/components/commons/layout";
-import { Global } from "@emotion/react";
-import { globalStyles } from "../src/commons/styles/globalStyles";
-import "@/styles/globals.css";
-import { AppProps } from "next/app";
-import { RecoilRoot } from "recoil";
+import { ToastContainer } from '@/features/toast/ui/ToastContainer';
+import ApolloSettings from '@/app/providers/apollo';
+import Layout from '@/shared/ui/layout';
+
+import { Global } from '@emotion/react';
+import { globalStyles } from '@/shared/ui/styles/globalStyles';
+import '@/styles/globals.css';
+import { AppProps } from 'next/app';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <RecoilRoot>
-      <ApolloSettings>
-        <>
-          <Global styles={globalStyles} />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </>
-      </ApolloSettings>
-    </RecoilRoot>
+    <ApolloSettings>
+      <>
+        <Global styles={globalStyles} />
+        <Layout>
+          <Component {...pageProps} />
+          <ToastContainer />
+        </Layout>
+      </>
+    </ApolloSettings>
   );
 }

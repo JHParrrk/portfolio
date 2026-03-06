@@ -1,5 +1,5 @@
-import { LoginCheckHoc } from "@/src/components/commons/hocs/logincheck";
-import MyPage from "@/src/components/units/mypages/mypage/mypage.index";
+import { LoginCheckHoc } from "@/shared/ui/hocs/logincheck";
+import MyPage from '@/features/mypage/ui/mypage/mypage.index';
 
 function LoginSuccessPage(): JSX.Element {
   return <MyPage />;

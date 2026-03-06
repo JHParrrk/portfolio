@@ -1,16 +1,17 @@
-import Head from "next/head";
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
-import styles from "@/styles/Home.module.css";
+import Head from 'next/head';
+import Image from 'next/image';
+import { Geist, Geist_Mono } from 'next/font/google';
+import styles from '@/styles/Home.module.css';
+import { ExampleDialog } from '@/features/example/ui/ExampleDialog';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export default function Home() {
@@ -26,6 +27,22 @@ export default function Home() {
         className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}
       >
         <main className={styles.main}>
+          <div
+            style={{
+              marginBottom: '40px',
+              padding: '20px',
+              border: '1px dashed #ccc',
+              borderRadius: '8px',
+              textAlign: 'center',
+            }}
+          >
+            <h2>🚀 Enterprise Architecture Test</h2>
+            <p style={{ marginBottom: '20px' }}>
+              Radix UI + Zod + React Hook Form + Zustand
+            </p>
+            <ExampleDialog />
+          </div>
+
           <Image
             className={styles.logo}
             src="/next.svg"

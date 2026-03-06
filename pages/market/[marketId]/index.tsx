@@ -1,4 +1,4 @@
-import MarketDetail from "@/src/components/units/market/detail/MarketDetail.index";
+import MarketDetail from '@/features/market/ui/detail/MarketDetail.index';
 
 export default function MarketDetailPage() {
   return <MarketDetail />;

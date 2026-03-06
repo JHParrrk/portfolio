@@ -1,5 +1,6 @@
-// import LoginPage from "@/src/components/units/login/newlogin/NewLogin.index";
+import LoginPage from '@/features/auth/ui/newlogin/NewLogin.index';
 
-// export default function NewLoginPage(): JSX.Element {
-//   return <LoginPage />;
+export default function NewLoginPage(): JSX.Element {
+  return <LoginPage />;
+}
 // }

@@ -1,4 +1,4 @@
-import MyfirebaseWrite from "../../../src/components/units/myfirebase/write/MyfirebaseWrite.container";
+import MyfirebaseWrite from '@/features/firebase/ui/write/MyfirebaseWrite.container';
 
 export default function MyfirebaseWriteNewPage(): JSX.Element {
   return <MyfirebaseWrite />;

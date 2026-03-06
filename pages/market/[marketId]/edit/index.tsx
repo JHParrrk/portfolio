@@ -1,5 +1,5 @@
-import { useQueryFetchUsedItem } from "@/src/components/commons/hooks/queries/ustQueryFetchUsedItem";
-import MarketWrite from "@/src/components/units/market/write/MarketWrite.index";
+import { useQueryFetchUsedItem } from '@/shared/hooks/queries/ustQueryFetchUsedItem';
+import MarketWrite from '@/features/market/ui/write/MarketWrite.index';
 
 const MarketEditPage = () => {
   const { data, loading, error } = useQueryFetchUsedItem();

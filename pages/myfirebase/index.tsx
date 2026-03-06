@@ -1,4 +1,4 @@
-import MyfirebaseList from "../../src/components/units/myfirebase/list/MyfirebaseList.container";
+import MyfirebaseList from '@/features/firebase/ui/list/MyfirebaseList.container';
 
 export default function MyfirebasePage(): JSX.Element {
   return <MyfirebaseList />;

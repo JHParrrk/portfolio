@@ -1,5 +1,5 @@
-declare module "react-slick" {
-  import * as React from "react";
+declare module 'react-slick' {
+  import * as React from 'react';
 
   export interface CustomArrowProps {
     className?: string;
@@ -10,6 +10,7 @@ declare module "react-slick" {
   }
 
   export interface Settings {
+    children?: React.ReactNode;
     accessibility?: boolean;
     adaptiveHeight?: boolean;
     afterChange?: (currentSlide: number) => void;
@@ -33,7 +34,7 @@ declare module "react-slick" {
     focusOnSelect?: boolean;
     infinite?: boolean;
     initialSlide?: number;
-    lazyLoad?: "ondemand" | "progressive";
+    lazyLoad?: 'ondemand' | 'progressive';
     nextArrow?: React.ReactNode;
     onEdge?: (swipeDirection: string) => void;
     onInit?: () => void;

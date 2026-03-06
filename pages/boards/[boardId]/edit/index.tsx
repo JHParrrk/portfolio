@@ -1,5 +1,5 @@
-import BoardWrite from "@/src/components/units/board/write/BoardWrite.index";
-import { useQueryFetchBoard } from "@/src/components/commons/hooks/queries/useQueryFetchBoard";
+import BoardWrite from '@/features/boards/ui/write/BoardWrite.index';
+import { useQueryFetchBoard } from '@/shared/hooks/queries/useQueryFetchBoard';
 
 const BoardsEditPage = () => {
   const { data, loading, error } = useQueryFetchBoard();
