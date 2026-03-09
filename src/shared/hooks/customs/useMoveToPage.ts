@@ -1,6 +1,5 @@
 // useMoveToPage.ts 파일
-import { useRouter } from "next/router";
-
+import { useRouter } from 'next/router';
 import { useGlobalStore } from '@/shared/models/stores';
 
 export const useMoveToPage = () => {
@@ -14,8 +13,13 @@ export const useMoveToPage = () => {
     void router.push(path);
   };
 
+  const prefetchPath = (path: string) => () => {
+    void router.prefetch(path);
+  };
+
   return {
     visitedPage,
     onClickMoveToPage,
+    prefetchPath,
   };
 };
