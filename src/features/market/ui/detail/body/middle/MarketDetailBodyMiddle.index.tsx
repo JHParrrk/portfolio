@@ -101,7 +101,13 @@ export default function MarketDetailBodyMiddle(props: IMarketDetailBodyProps) {
             >
               {formattedImages.map((el: string) => (
                 <div className={MDBM.MainImageWrapper} key={el}>
-                  <Image className={MDBM.Image} src={el} alt="Main Image" width={800} height={600} />
+                  <Image
+                    className={MDBM.Image}
+                    src={el}
+                    alt="Main Image"
+                    width={800}
+                    height={600}
+                  />
                 </div>
               ))}
             </Slider>
@@ -114,7 +120,13 @@ export default function MarketDetailBodyMiddle(props: IMarketDetailBodyProps) {
               >
                 {formattedImages.map((el: string) => (
                   <div className={MDBM.ThumbnailImageWrapper} key={el}>
-                    <Image className={MDBM.ThumbnailImage} src={el} alt="Thumbnail Image" width={200} height={150} />
+                    <Image
+                      className={MDBM.ThumbnailImage}
+                      src={el}
+                      alt="Thumbnail Image"
+                      width={200}
+                      height={150}
+                    />
                   </div>
                 ))}
               </Slider>
@@ -122,7 +134,13 @@ export default function MarketDetailBodyMiddle(props: IMarketDetailBodyProps) {
           </>
         ) : formattedImages.length === 1 ? (
           <div className={MDBM.MainImageWrapper}>
-            <Image className={MDBM.Image} src={formattedImages[0]} alt="Main Image" width={800} height={600} />
+            <Image
+              className={MDBM.Image}
+              src={formattedImages[0]}
+              alt="Main Image"
+              width={800}
+              height={600}
+            />
           </div>
         ) : (
           <div className={MDBM.MainImageWrapper}>
@@ -178,7 +196,6 @@ export default function MarketDetailBodyMiddle(props: IMarketDetailBodyProps) {
           height="240px"
         />
       )} */}
-      <div className={MDBM.LikeWrapper}></div>
     </div>
   );
 }

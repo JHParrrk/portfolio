@@ -177,25 +177,11 @@ export const MDBM = {
     boxShadow: '0 8px 30px rgba(0,0,0,0.06)',
   }),
 
-  LikeWrapper: style({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    paddingTop: '80px',
-    paddingBottom: '40px',
-  }),
-
   HeartIcon: style({
     width: '40px',
     height: '40px',
     color: '#ffd600',
     cursor: 'pointer',
-  }),
-
-  LikeCount: style({
-    paddingTop: '4px',
-    fontSize: '18px',
-    fontWeight: 'bold',
   }),
 
   MapWrapper: style({

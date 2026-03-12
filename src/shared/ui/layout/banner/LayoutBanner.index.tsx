@@ -25,6 +25,7 @@ export default function LayoutBanner(): JSX.Element {
             alt="Banner 01"
             width={800}
             height={400}
+            style={{ objectFit: 'contain' }}
           />
         </div>
         <div>
@@ -34,6 +35,7 @@ export default function LayoutBanner(): JSX.Element {
             alt="Banner 02"
             width={800}
             height={400}
+            style={{ objectFit: 'contain' }}
           />
         </div>
         <div>
@@ -43,6 +45,7 @@ export default function LayoutBanner(): JSX.Element {
             alt="Banner 03"
             width={800}
             height={400}
+            style={{ objectFit: 'contain' }}
           />
         </div>
         <div>
@@ -52,6 +55,7 @@ export default function LayoutBanner(): JSX.Element {
             alt="Banner 04"
             width={800}
             height={400}
+            style={{ objectFit: 'contain' }}
           />
         </div>
         <div>
@@ -61,6 +65,7 @@ export default function LayoutBanner(): JSX.Element {
             alt="Banner 05"
             width={800}
             height={400}
+            style={{ objectFit: 'contain' }}
           />
         </div>
         <div>
@@ -70,6 +75,7 @@ export default function LayoutBanner(): JSX.Element {
             alt="Banner 06"
             width={800}
             height={400}
+            style={{ objectFit: 'contain' }}
           />
         </div>
         <div>
@@ -79,6 +85,7 @@ export default function LayoutBanner(): JSX.Element {
             alt="Banner 07"
             width={800}
             height={400}
+            style={{ objectFit: 'contain' }}
           />
         </div>
       </Slider>
