@@ -28,6 +28,10 @@ export default async function handler(
       headers.authorization = req.headers.authorization as string;
     if (req.headers['content-type'])
       headers['content-type'] = req.headers['content-type'] as string;
+    if (req.headers.cookie) {
+      // 프론트의 쿠키(refreshToken)를 백엔드로 전달해야 restore가 동작함
+      headers.cookie = req.headers.cookie;
+    }
 
     // 스트림 기반 버퍼 읽기
     const chunks = [];
@@ -46,6 +50,25 @@ export default async function handler(
       body,
       signal: controller.signal, // 타임아웃 컨트롤러 추가
     }).finally(() => clearTimeout(timeout));
+
+    // 백엔드에서 전달받은 쿠키(refreshToken)를 클라이언트로 포워딩
+    const setCookieHeaders = response.headers.getSetCookie
+      ? response.headers.getSetCookie()
+      : response.headers.get('set-cookie');
+
+    if (setCookieHeaders) {
+      // 프록시 도메인과 백엔드 도메인 불일치로 인한 브라우저 쿠키 차단을 막기 위해 Domain 속성을 제거
+      let cookiesArray = Array.isArray(setCookieHeaders)
+        ? setCookieHeaders
+        : [setCookieHeaders];
+      cookiesArray = cookiesArray.map(
+        (cookie) =>
+          cookie
+            .replace(/Domain=[^;]+;?\s*/gi, '') // Domain 속성 제거
+            .replace(/SameSite=None;?\s*/gi, 'SameSite=Lax; ') // 로컬 개발(http)을 위해 SameSite 속성 조정
+      );
+      res.setHeader('Set-Cookie', cookiesArray);
+    }
 
     const responseData = await response.text();
 

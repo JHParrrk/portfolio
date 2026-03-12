@@ -19,7 +19,7 @@ export const useLogout = () => {
       setToken('');
 
       // 3. Apollo Cache 초기화
-      await client.clearStore();
+      await client.resetStore();
 
       // 4. 알림 및 페이지 이동
       Modal.success({
