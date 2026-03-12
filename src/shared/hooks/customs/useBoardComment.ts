@@ -1,10 +1,10 @@
-import { Modal } from "antd";
-import { ChangeEvent, useState } from "react";
-import { ApolloQueryResult } from "@apollo/client";
-import { useMutationCreateBoardComment } from "../mutations/useMutationCreateBoardComment";
-import { useMutationDeleteBoardComment } from "../mutations/useMutationDeleteBoardComment";
-import { useMutationUpdateBoardComment } from "../mutations/useMutationUpdateBoardComment";
-import { IQuery } from "@/shared/types/generated/types";
+import { Modal } from 'antd';
+import { ChangeEvent, useState } from 'react';
+import { ApolloQueryResult } from '@apollo/client';
+import { useMutationCreateBoardComment } from '../mutations/useMutationCreateBoardComment';
+import { useMutationDeleteBoardComment } from '../mutations/useMutationDeleteBoardComment';
+import { useMutationUpdateBoardComment } from '../mutations/useMutationUpdateBoardComment';
+import { IQuery } from '@/shared/types/generated/types';
 
 interface IUpdateBoardCommentInput {
   contents?: string;
@@ -16,10 +16,11 @@ interface IUseBoardCommentArgs {
   boardCommentId?: string;
   onToggleEdit?: () => void;
   refetch: () => Promise<ApolloQueryResult<Pick<IQuery, any>>>;
+  isLoggedIn?: boolean;
 }
 
 export const useBoardComment = (args: IUseBoardCommentArgs) => {
-  const [myPassword, setMyPassword] = useState("");
+  const [myPassword, setMyPassword] = useState('');
   const [createBoardComment] = useMutationCreateBoardComment();
   const [updateBoardComment] = useMutationUpdateBoardComment();
   const [deleteBoardComment] = useMutationDeleteBoardComment();
@@ -46,18 +47,18 @@ export const useBoardComment = (args: IUseBoardCommentArgs) => {
               fetchBoardComments(prev = [], { readField }) {
                 return prev.filter(
                   (commentRef: any) =>
-                    readField("_id", commentRef) !== deletedId
+                    readField('_id', commentRef) !== deletedId
                 );
               },
             },
           });
         },
       });
-      Modal.success({ content: "댓글이 삭제되었습니다." });
+      Modal.success({ content: '댓글이 삭제되었습니다.' });
     } catch (error) {
       if (error instanceof Error) Modal.error({ content: error.message });
     } finally {
-      if (typeof args.refetch === "function") await args.refetch();
+      if (typeof args.refetch === 'function') await args.refetch();
     }
   };
 
@@ -65,11 +66,11 @@ export const useBoardComment = (args: IUseBoardCommentArgs) => {
   const onClickWrite = async (data: any, reset: () => void) => {
     if (
       !data.writer ||
-      !data.password ||
+      (!args.isLoggedIn && !data.password) || // Use args.isLoggedIn check
       !data.contents ||
       data.star === undefined
     ) {
-      alert("모든 필드를 입력해주세요.");
+      alert('모든 필드를 입력해주세요.');
       return;
     }
 
@@ -94,12 +95,10 @@ export const useBoardComment = (args: IUseBoardCommentArgs) => {
           });
         },
       });
-      Modal.success({ content: "댓글이 등록되었습니다." });
+      Modal.success({ content: '댓글이 등록되었습니다.' });
       reset();
     } catch (error) {
       if (error instanceof Error) Modal.error({ content: error.message });
-    } finally {
-      if (typeof args.refetch === "function") await args.refetch();
     }
   };
 
@@ -109,15 +108,15 @@ export const useBoardComment = (args: IUseBoardCommentArgs) => {
     refetch: () => Promise<ApolloQueryResult<Pick<IQuery, any>>>
   ) => {
     if (!data.contents) {
-      alert("내용이 수정되지 않았습니다.");
+      alert('내용이 수정되지 않았습니다.');
       return;
     }
-    if (!data.password) {
-      alert("비밀번호가 입력되지 않았습니다.");
+    if (!args.isLoggedIn && !data.password) {
+      alert('비밀번호가 입력되지 않았습니다.');
       return;
     }
     if (data.star === undefined) {
-      alert("별점이 입력되지 않았습니다.");
+      alert('별점이 입력되지 않았습니다.');
       return;
     }
 
@@ -143,7 +142,7 @@ export const useBoardComment = (args: IUseBoardCommentArgs) => {
             fields: {
               fetchBoardComments(prev = [], { readField }) {
                 return prev.map((commentRef: any) => {
-                  const commentId = readField("_id", commentRef);
+                  const commentId = readField('_id', commentRef);
                   return commentId === updatedComment._id
                     ? { ...commentRef, ...updatedComment }
                     : commentRef;
@@ -154,13 +153,13 @@ export const useBoardComment = (args: IUseBoardCommentArgs) => {
         },
       });
 
-      Modal.success({ content: "댓글이 수정되었습니다." });
+      Modal.success({ content: '댓글이 수정되었습니다.' });
 
       if (args.onToggleEdit) args.onToggleEdit();
     } catch (error) {
       if (error instanceof Error) Modal.error({ content: error.message });
     } finally {
-      if (typeof refetch === "function") await refetch();
+      if (typeof refetch === 'function') await refetch();
     }
   };
 

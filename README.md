@@ -39,7 +39,6 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
 
-
 # Portfolio Project
 
 **Portfolio Project**는 Next.js와 TypeScript를 기반으로 한 포트폴리오 웹 애플리케이션으로, React와 Apollo Client를 활용하여 클라이언트 측 상태 관리 및 GraphQL API 통신을 처리합니다.
@@ -48,6 +47,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/b
 
 - **Next.js 기반 프레임워크**:
   - 프로젝트는 `create-next-app`으로 생성되었으며 React와 TypeScript를 활용합니다.
+  - **BFF (Backend For Frontend) 패턴**: Next.js API Routes를 활용하여 외부 API(GraphQL)를 안전하게 프록시하고 클라이언트에 최적화된 데이터를 전달합니다. (예: [/market/bff](/market/bff))
   - 서버 사이드 렌더링(SSR) 및 정적 사이트 생성(SSG)을 지원합니다.
 
 - **GraphQL 연동**:
@@ -59,7 +59,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/b
 
 - **글로벌 스타일링**:
   - Emotion을 활용한 글로벌 스타일링 적용.
-  - 다크 모드와 라이트 모드 지원. 
+  - 다크 모드와 라이트 모드 지원.
 
 - **컴포넌트 기반 구조**:
   - 재사용 가능한 컴포넌트 기반으로 설계되어 유지보수성과 확장성을 높였습니다.
@@ -87,17 +87,20 @@ portfolio/
 ## 설치 및 실행
 
 1. **저장소 클론**:
+
    ```bash
    git clone https://github.com/JHParrrk/portfolio.git
    cd portfolio
    ```
 
 2. **의존성 설치**:
+
    ```bash
    npm install
    ```
 
 3. **개발 서버 실행**:
+
    ```bash
    npm run dev
    ```
@@ -108,20 +111,24 @@ portfolio/
 ## 주요 코드 설명
 
 ### **GraphQL 통신**
+
 - `memo.txt`:
   - GraphQL 쿼리 작성법 및 서버와 클라이언트 간의 데이터 매핑에 대한 설명이 포함되어 있습니다.
 
 ### **전역 상태 관리**
+
 - `pages/_app.tsx`:
   - Recoil을 활용하여 애플리케이션의 전역 상태를 관리합니다.
 
 ### **글로벌 스타일링**
+
 - `styles/globals.css`:
   - 글로벌 CSS 파일로, 다크 모드 및 반응형 디자인을 지원합니다.
 - `styles/Home.module.css`:
   - 메인 페이지의 스타일을 정의합니다.
 
 ### **Apollo Client**
+
 - `ApolloSettings` 컴포넌트를 통해 GraphQL API와의 통신을 설정합니다.
 
 ## 참고 사항

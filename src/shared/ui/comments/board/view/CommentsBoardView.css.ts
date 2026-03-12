@@ -1,73 +1,104 @@
-﻿import { style } from "@vanilla-extract/css";
+﻿import { style } from '@vanilla-extract/css';
 
 export const CBV = {
   ItemWrapper: style({
-    width: "1200px",
-    margin: "0px 100px",
-    paddingTop: "20px",
-    height: "128px",
-    borderBottom: "1px solid lightgray",
+    width: '100%',
+    maxWidth: '1024px',
+    padding: '24px 32px',
+    borderBottom: '1px solid #edf2f7',
+    boxSizing: 'border-box',
+    backgroundColor: '#ffffff',
   }),
 
   FlexWrapper: style({
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '16px',
   }),
 
   Avatar: style({
-    width: "48px",
-    height: "48px",
+    width: '48px',
+    height: '48px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+    border: '1px solid #e2e8f0',
   }),
 
   MainWrapper: style({
-    width: "100%",
-    paddingLeft: "10px",
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '6px',
   }),
 
   WriterWrapper: style({
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: '12px',
   }),
 
   Writer: style({
-    fontSize: "20px",
-    fontWeight: "bold",
+    fontSize: '16px',
+    fontWeight: '700',
+    color: '#1a202c',
   }),
 
-  Contents: style({}),
+  Contents: style({
+    fontSize: '15px',
+    color: '#4a5568',
+    lineHeight: '1.6',
+    marginTop: '4px',
+  }),
 
   OptionWrapper: style({
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '8px',
+    marginLeft: 'auto',
   }),
 
   UpdateIcon: style({
-    width: "24px",
-    height: "24px",
-    cursor: "pointer",
+    width: '20px',
+    height: '20px',
+    cursor: 'pointer',
+    opacity: 0.5,
+    transition: 'opacity 0.2s',
+    ':hover': { opacity: 1 },
   }),
 
   DeleteIcon: style({
-    width: "24px",
-    height: "24px",
-    cursor: "pointer",
+    width: '20px',
+    height: '20px',
+    cursor: 'pointer',
+    opacity: 0.5,
+    transition: 'opacity 0.2s',
+    ':hover': { opacity: 1 },
   }),
 
   DateString: style({
-    color: "lightgray",
-    paddingTop: "15px",
-    paddingLeft: "60px",
+    color: '#a0aec0',
+    fontSize: '13px',
+    marginTop: '8px',
+    paddingLeft: '64px', // To align with content
   }),
 
   Star: style({
-    paddingLeft: "20px",
+    fontSize: '16px',
+    color: '#ecc94b',
   }),
 
   PasswordModal: style({}),
 
   PasswordInput: style({
-    width: "100%",
-    marginTop: "10px",
+    width: '100%',
+    marginTop: '10px',
+    padding: '10px',
+    borderRadius: '8px',
+    border: '1px solid #e2e8f0',
+    outline: 'none',
+    ':focus': {
+      borderColor: '#cbd5e0',
+    },
   }),
 };

@@ -3,76 +3,87 @@ import { style, globalStyle } from '@vanilla-extract/css';
 export const MDBM = {
   Body: style({
     width: '100%',
-    minHeight: '800px',
-    padding: '20px',
+    minHeight: '400px',
     backgroundColor: '#ffffff',
-    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-    borderRadius: '10px',
   }),
 
   Title: style({
-    fontSize: '36px',
-    fontWeight: 'bold',
+    fontSize: '40px',
+    fontWeight: '800',
+    color: '#1a202c',
+    lineHeight: '1.3',
+    marginBottom: '8px',
+    wordBreak: 'break-word',
+    letterSpacing: '-1px',
     paddingTop: '20px',
-    color: '#333333',
   }),
 
   Remarks: style({
     fontSize: '18px',
-    color: '#757575',
-    paddingTop: '4px',
+    color: '#718096',
+    marginBottom: '16px',
+    fontWeight: '500',
   }),
 
   Price: style({
     fontSize: '36px',
-    fontWeight: 'bold',
-    paddingTop: '8px',
-    paddingBottom: '40px',
-    borderBottom: '1px solid #e0e0e0',
+    fontWeight: '800',
+    color: '#3182ce',
+    paddingBottom: '32px',
+    borderBottom: '1px solid #edf2f7',
     width: '100%',
-    color: '#ff5722',
+    marginBottom: '40px',
   }),
 
   Contents: style({
-    paddingTop: '40px',
-    paddingBottom: '40px',
+    paddingTop: '20px',
+    paddingBottom: '60px',
     lineHeight: 1.8,
-    color: '#424242',
+    color: '#2d3748',
+    fontSize: '17px',
   }),
 
   Tags: style({
     display: 'flex',
     flexWrap: 'wrap',
-    gap: '10px',
+    gap: '8px',
     paddingBottom: '40px',
-    borderBottom: '1px solid #e0e0e0',
+    borderBottom: '1px solid #edf2f7',
     width: '100%',
   }),
 
   Tag: style({
-    color: '#616161',
-    fontSize: '16px',
-    backgroundColor: '#f5f5f5',
-    padding: '5px 10px',
-    borderRadius: '5px',
+    color: '#3182ce',
+    fontSize: '14px',
+    fontWeight: '600',
+    backgroundColor: '#ebf8ff',
+    padding: '6px 16px',
+    borderRadius: '20px',
+    transition: 'all 0.2s',
+    cursor: 'pointer',
+    ':hover': {
+      backgroundColor: '#bee3f8',
+      transform: 'translateY(-2px)',
+    },
   }),
 
   CarouselWrapper: style({
     width: '100%',
-    maxWidth: '600px',
-    margin: '30px auto',
-    backgroundColor: '#fafafa',
-    borderRadius: '10px',
-    padding: '10px',
+    maxWidth: '700px',
+    margin: '40px auto',
+    borderRadius: '16px',
+    overflow: 'hidden',
   }),
 
   MainImageWrapper: style({
     position: 'relative',
     width: '100%',
     paddingTop: '100%',
-    borderRadius: '10px',
+    borderRadius: '16px',
     overflow: 'hidden',
-    backgroundColor: '#eeeeee',
+    backgroundColor: '#f7fafc',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
+    border: '1px solid #edf2f7',
   }),
 
   Image: style({
@@ -82,23 +93,23 @@ export const MDBM = {
     width: '100%',
     height: '100%',
     objectFit: 'contain',
-    transition: 'transform 0.3s ease-in-out',
-
-    ':hover': {
-      transform: 'scale(1.1)',
-    },
+    transition: 'transform 0.4s ease',
   }),
 
   ThumbnailSliderWrapper: style({
-    marginTop: '20px',
+    marginTop: '16px',
   }),
 
   ThumbnailImageWrapper: style({
     cursor: 'pointer',
-    border: '3px solid transparent',
-    borderRadius: '5px',
+    border: '2px solid transparent',
+    borderRadius: '8px',
     overflow: 'hidden',
-    transition: 'border-color 0.3s',
+    transition: 'all 0.2s',
+    opacity: 0.7,
+    ':hover': {
+      opacity: 1,
+    },
   }),
 
   ThumbnailImage: style({
@@ -109,45 +120,90 @@ export const MDBM = {
   }),
 
   LikeWrapper: style({
-    paddingTop: '160px',
+    marginTop: '60px',
+    paddingTop: '40px',
+    borderTop: '1px solid #edf2f7',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: '20px',
+    gap: '32px',
   }),
 
   IconWrapper: style({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
+    width: '80px',
+    height: '80px',
+    borderRadius: '20px',
+    backgroundColor: '#f7fafc',
+    transition: 'all 0.2s ease',
+    cursor: 'pointer',
+    ':hover': {
+      backgroundColor: '#edf2f7',
+      transform: 'translateY(-4px)',
+    },
   }),
 
   LikeIcon: style({
-    fontSize: '24px',
-    color: '#ff5722',
-    cursor: 'pointer',
+    fontSize: '28px',
+    color: '#ecc94b',
+    marginBottom: '8px',
   }),
 
   DislikeIcon: style({
-    fontSize: '24px',
-    color: '#9e9e9e',
+    fontSize: '28px',
+    color: '#a0aec0',
+    marginBottom: '8px',
+  }),
+
+  LikeCount: style({
+    fontSize: '15px',
+    fontWeight: '700',
+    color: '#d69e2e',
+  }),
+
+  DislikeCount: style({
+    fontSize: '15px',
+    fontWeight: '700',
+    color: '#718096',
+  }),
+
+  Youtube: style({
+    margin: '40px auto',
+    borderRadius: '16px',
+    overflow: 'hidden',
+    boxShadow: '0 8px 30px rgba(0,0,0,0.06)',
+  }),
+
+  LikeWrapper: style({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingTop: '80px',
+    paddingBottom: '40px',
+  }),
+
+  HeartIcon: style({
+    width: '40px',
+    height: '40px',
+    color: '#ffd600',
     cursor: 'pointer',
   }),
 
   LikeCount: style({
     paddingTop: '4px',
-    color: '#ff5722',
+    fontSize: '18px',
+    fontWeight: 'bold',
   }),
 
-  DislikeCount: style({
-    paddingTop: '4px',
-    color: '#9e9e9e',
-  }),
-
-  Youtube: style({
-    margin: 'auto',
-    borderRadius: '10px',
-    overflow: 'hidden',
+  MapWrapper: style({
+    width: '100%',
+    height: '360px',
+    marginTop: '40px',
+    borderTop: '1px solid #bdbdbd',
+    paddingTop: '40px',
   }),
 };
 

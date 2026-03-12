@@ -4,10 +4,9 @@ import { LN } from './LayoutNavigation.css';
 import { useMoveToPage } from '@/shared/hooks/customs/useMoveToPage';
 
 const NAVIGATION_MENUS = [
-  { name: '나의파이어베이스', page: '/myfirebase' },
-  { name: '무한스크롤강아지', page: '/openapis' },
-  { name: '라이브게시판', page: '/boards' },
-  { name: '중고상품', page: '/market' },
+  { name: '기능TEST', page: '/feature-tests' },
+  { name: '자유게시판', page: '/boards' },
+  { name: '중고장터', page: '/market' },
   { name: '마이페이지', page: '/mypages' },
 ];
 

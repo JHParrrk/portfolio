@@ -1,8 +1,13 @@
-import type { ChangeEvent } from "react";
+import type { UseFormRegister, UseFormHandleSubmit } from 'react-hook-form';
+
+export interface IMyfirebaseFormData {
+  writer: string;
+  title: string;
+  contents: string;
+}
 
 export interface IMyfirebaseWriteUIProps {
-  onChangeWriter: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeTitle: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeContents: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClickSubmit: () => void;
+  register: UseFormRegister<IMyfirebaseFormData>;
+  handleSubmit: UseFormHandleSubmit<IMyfirebaseFormData>;
+  onClickSubmit: (data: IMyfirebaseFormData) => void;
 }

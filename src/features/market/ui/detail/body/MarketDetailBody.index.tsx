@@ -1,25 +1,26 @@
-import styled from "@emotion/styled";
-import { useQueryIdChecker } from "@/shared/hooks/customs/useQueryIdChecker";
-import { useQueryFetchUsedItem } from "@/shared/hooks/queries/ustQueryFetchUsedItem";
-import MarketDetailBodyBottom from "./bottom/MarketDetailBodyBottom.index";
-import MarketDetailBodyMiddle from "./middle/MarketDetailBodyMiddle.index";
-import MarketDetailBodyTop from "./top/MarketDetailBodyTop.index";
+import styled from '@emotion/styled';
+import { useQueryIdChecker } from '@/shared/hooks/customs/useQueryIdChecker';
+import { useQueryFetchUsedItem } from '@/shared/hooks/queries/ustQueryFetchUsedItem';
+import MarketDetailBodyBottom from './bottom/MarketDetailBodyBottom.index';
+import MarketDetailBodyMiddle from './middle/MarketDetailBodyMiddle.index';
+import MarketDetailBodyTop from './top/MarketDetailBodyTop.index';
 
 const CardWrapper = styled.div`
-  border: 1px solid black;
-  padding-top: 80px;
-  padding-bottom: 100px;
-  padding-left: 102px;
-  padding-right: 102px;
+  width: 100%;
+  max-width: 1024px;
+  margin-top: 80px;
+  padding: 60px 80px;
+  border-radius: 24px;
+  background-color: #ffffff;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.05);
+  border: 1px solid #edf2f7;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  border: none;
-  box-shadow: 0px 0px 10px gray;
+  box-sizing: border-box;
 `;
 
 export default function MarketDetailBody() {
-  const { id } = useQueryIdChecker("marketId");
+  const { id } = useQueryIdChecker('marketId');
   const { data, loading, error } = useQueryFetchUsedItem(id); // marketId를 직접 전달
 
   if (loading) return <p>Loading...</p>; // 로딩 중 표시

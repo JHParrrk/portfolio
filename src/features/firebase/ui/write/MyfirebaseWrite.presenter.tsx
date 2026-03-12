@@ -6,13 +6,13 @@ export default function MyfirebaseWriteUI(
 ): JSX.Element {
   return (
     <div className={MFBW.CustomBody}>
-      <div className={MFBW.Wrapper}>
+      <form className={MFBW.Wrapper} onSubmit={props.handleSubmit(props.onClickSubmit)}>
         <div className={MFBW.InputWrapper}>
           작성자:
           <input
             className={MFBW.MyInput}
             type="text"
-            onChange={props.onChangeWriter}
+            {...props.register("writer", { required: true })}
             placeholder="작성자를 입력하세요."
           />
         </div>
@@ -21,7 +21,7 @@ export default function MyfirebaseWriteUI(
           <input
             className={MFBW.MyInput}
             type="text"
-            onChange={props.onChangeTitle}
+            {...props.register("title", { required: true })}
             placeholder="제목을 입력하세요."
           />
         </div>
@@ -30,16 +30,16 @@ export default function MyfirebaseWriteUI(
           <input
             className={MFBW.MyInput}
             type="text"
-            onChange={props.onChangeContents}
+            {...props.register("contents", { required: true })}
             placeholder="내용을 입력하세요."
           />
         </div>
         <div className={MFBW.ButtonWrapper}>
-          <button className={MFBW.MyButton} onClick={props.onClickSubmit}>
+          <button className={MFBW.MyButton} type="submit">      
             <span className={MFBW.InnerLogo}>💎 LIVE</span> 등록하기
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

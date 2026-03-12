@@ -131,7 +131,6 @@ export default function BoardWrite(props: IBoardWriteProps): JSX.Element {
             />
             <div className={PF.Error}>{errors.address?.message as string}</div>
           </div>
-
           <div className={PF.InputWrapper}>
             <div className={PF.Label}>유튜브</div>
             <input
@@ -157,28 +156,6 @@ export default function BoardWrite(props: IBoardWriteProps): JSX.Element {
                 />
               ))}
             </div>
-          </div>
-
-          <div className={PF.OptionWrapper}>
-            <div className={PF.Label}>메인설정</div>
-            <input
-              className={PF.RadioButton}
-              type="radio"
-              id="youtube"
-              value="youtube"
-            />
-            <label className={PF.RadioLabel} htmlFor="youtube">
-              유튜브
-            </label>
-            <input
-              className={PF.RadioButton}
-              type="radio"
-              id="image"
-              value="image"
-            />
-            <label className={PF.RadioLabel} htmlFor="image">
-              사진
-            </label>
           </div>
 
           <div className={PF.ButtonWrapper}>

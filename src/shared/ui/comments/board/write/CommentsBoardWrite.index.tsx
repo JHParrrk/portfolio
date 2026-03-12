@@ -1,13 +1,13 @@
-﻿import { CBW } from "./CommentsBoardWrite.css";
-import { useForm, Controller } from "react-hook-form";
-import { useBoardComment } from "@/shared/hooks/customs/useBoardComment";
-import { useQueryIdChecker } from "@/shared/hooks/customs/useQueryIdChecker";
-import {
-  IBoardComment,
-  IQuery,
-} from "@/shared/types/generated/types";
-import { ApolloQueryResult } from "@apollo/client";
-import { Rate } from "antd";
+﻿import { CBW } from './CommentsBoardWrite.css';
+import { useForm, Controller } from 'react-hook-form';
+import { useBoardComment } from '@/shared/hooks/customs/useBoardComment';
+import { useQueryIdChecker } from '@/shared/hooks/customs/useQueryIdChecker';
+import { useGlobalStore } from '@/shared/models/stores';
+import { useQueryFetchUserLoggedIn } from '@/shared/hooks/queries/useQueryFetchUserLoggedIn';
+import { IBoardComment, IQuery } from '@/shared/types/generated/types';
+import { ApolloQueryResult } from '@apollo/client';
+import { Rate } from 'antd';
+import { useEffect } from 'react';
 
 interface ICommentsBoardWriteProps {
   isEdit?: boolean;
@@ -17,33 +17,46 @@ interface ICommentsBoardWriteProps {
 }
 
 export default function CommentsBoardWrite(props: ICommentsBoardWriteProps) {
-  const { id } = useQueryIdChecker("boardId");
+  const { id } = useQueryIdChecker('boardId');
+  const accessToken = useGlobalStore((state) => state.accessToken);
+  const { data: userData } = useQueryFetchUserLoggedIn();
+
   const { onClickWrite, onClickUpdate } = useBoardComment({
     boardId: id,
     boardCommentId: props.el?._id,
     onToggleEdit: props.onToggleEdit,
+    isLoggedIn: !!accessToken,
     refetch:
       props.refetch ??
       (() =>
         Promise.resolve({ data: {} } as ApolloQueryResult<Pick<IQuery, any>>)),
   });
 
-  const { register, handleSubmit, control, watch, reset } = useForm({
+  const { register, handleSubmit, control, watch, reset, setValue } = useForm({
     defaultValues: {
-      writer: props.el?.writer ?? "",
-      password: "",
-      contents: props.isEdit ? props.el?.contents : "",
+      writer: props.el?.writer ?? '',
+      password: '',
+      contents: props.isEdit ? props.el?.contents : '',
       star: props.el?.rating ?? 0,
     },
   });
 
-  const contents = watch("contents");
+  useEffect(() => {
+    if (accessToken && userData?.fetchUserLoggedIn) {
+      setValue('writer', userData.fetchUserLoggedIn.name);
+    }
+  }, [accessToken, userData, setValue]);
+
+  const contents = watch('contents');
 
   return (
     <div className={CBW.Wrapper}>
       {!props.isEdit && (
         <>
-          <img className={CBW.PencilIcon} src="/images/boardComment/write/pencil.png" />
+          <img
+            className={CBW.PencilIcon}
+            src="/images/boardComment/write/pencil.png"
+          />
           <span>등록</span>
         </>
       )}
@@ -51,15 +64,17 @@ export default function CommentsBoardWrite(props: ICommentsBoardWriteProps) {
         <input
           className={CBW.Input}
           placeholder="작성자"
-          {...register("writer")}
-          disabled={props.isEdit}
+          {...register('writer')}
+          disabled={props.isEdit || !!accessToken}
         />
-        <input
-          className={CBW.Input}
-          type="password"
-          placeholder="비밀번호"
-          {...register("password")}
-        />
+        {!accessToken && (
+          <input
+            className={CBW.Input}
+            type="password"
+            placeholder="비밀번호"
+            {...register('password')}
+          />
+        )}
         <Controller
           name="star"
           control={control}
@@ -87,7 +102,7 @@ export default function CommentsBoardWrite(props: ICommentsBoardWriteProps) {
           className={CBW.Contents}
           maxLength={100}
           placeholder="개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법 정보 유포시 모니터링 후 삭제될 수 있으며, 이에 대한 민형사상 책임은 게시자에게 있습니다."
-          {...register("contents")}
+          {...register('contents')}
         />
         <div className={CBW.BottomWrapper}>
           <div className={CBW.ContentsLength}>{contents?.length}/100</div>
@@ -106,7 +121,7 @@ export default function CommentsBoardWrite(props: ICommentsBoardWriteProps) {
                 : onClickWrite(data, reset)
             )}
           >
-            {props.isEdit ? "수정하기" : "등록하기"}
+            {props.isEdit ? '수정하기' : '등록하기'}
           </button>
         </div>
       </div>

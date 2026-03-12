@@ -57,7 +57,9 @@ const ApolloSettings = (props: IApolloSettingsProps): JSX.Element => {
   });
 
   const uploadLink = createUploadLink({
-    uri: 'https://backendonline.codebootcamp.co.kr/graphql',
+    // 기존의 외부 API 엔드포인트 대신, 내부의 BFF Proxy API를 바라보도록 변경합니다. (보안 목적)
+    // uri: 'https://backendonline.codebootcamp.co.kr/graphql',
+    uri: '/api/graphql/proxy',
     credentials: 'include',
   });
 

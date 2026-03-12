@@ -1,4 +1,5 @@
-﻿import { LH } from './LayoutHeader.css';
+﻿import { useEffect } from 'react';
+import { LH } from './LayoutHeader.css';
 import { useQueryFetchUserLoggedIn } from '@/shared/hooks/queries/useQueryFetchUserLoggedIn';
 import { useLogout } from '@/shared/hooks/customs/useLogout';
 import { useMoveToPage } from '@/shared/hooks/customs/useMoveToPage';
@@ -9,6 +10,21 @@ export default function LayoutHeader(): JSX.Element {
   const { onLogout } = useLogout();
   const { onClickMoveToPage } = useMoveToPage();
   const accessToken = useGlobalStore((state) => state.accessToken);
+  const theme = useGlobalStore((state) => state.theme);
+  const toggleTheme = useGlobalStore((state) => state.toggleTheme);
+  const setTheme = useGlobalStore((state) => state.setTheme);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else if (
+      window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    ) {
+      setTheme('dark');
+    }
+  }, [setTheme]);
 
   // useQueryFetchUserLoggedIn 훅을 사용하여 데이터 가져오기
   const { data } = useQueryFetchUserLoggedIn();
@@ -18,12 +34,26 @@ export default function LayoutHeader(): JSX.Element {
       <div className={LH.InnerWrapper}>
         <div
           className={LH.InnerLogo}
-          onClick={onClickMoveToPage('/boards')}
+          onClick={onClickMoveToPage('/')}
           style={{ textDecoration: 'none', cursor: 'pointer' }}
         >
           💎 LIVE
         </div>
         <div>
+          <button
+            onClick={toggleTheme}
+            style={{
+              cursor: 'pointer',
+              background: 'none',
+              border: 'none',
+              fontSize: '20px',
+              marginRight: '20px',
+              verticalAlign: 'middle',
+            }}
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
+
           {accessToken ? (
             <>
               <div

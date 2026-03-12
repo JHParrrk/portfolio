@@ -2,9 +2,9 @@ import {
   IQuery,
   IQueryFetchBoardArgs,
   IQueryFetchUseditemArgs,
-} from "@/shared/types/generated/types";
-import { gql, useQuery } from "@apollo/client";
-import { useRouter } from "next/router";
+} from '@/shared/types/generated/types';
+import { gql, useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
 
 export const FETCH_USED_ITEM = gql`
   query fetchUseditem($useditemId: ID!) {
@@ -21,6 +21,8 @@ export const FETCH_USED_ITEM = gql`
         zipcode
         address
         addressDetail
+        lat
+        lng
       }
       buyer {
         name
@@ -41,15 +43,15 @@ export const useQueryFetchUsedItem = (useditemIdParam?: string) => {
   const router = useRouter();
   const useditemId =
     useditemIdParam ||
-    (typeof router.query.useditemId === "string"
+    (typeof router.query.useditemId === 'string'
       ? router.query.useditemId
       : undefined);
 
   const { data, loading, error } = useQuery<
-    Pick<IQuery, "fetchUseditem">,
+    Pick<IQuery, 'fetchUseditem'>,
     IQueryFetchUseditemArgs
   >(FETCH_USED_ITEM, {
-    variables: { useditemId: useditemId || "" },
+    variables: { useditemId: useditemId || '' },
     skip: !useditemId, // useditemId가 없으면 쿼리 실행 생략
   });
 

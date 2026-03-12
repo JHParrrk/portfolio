@@ -1,7 +1,8 @@
-﻿import { LB } from "./LayoutBanner.css";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+﻿import { LB } from './LayoutBanner.css';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import Image from 'next/image';
 
 export default function LayoutBanner(): JSX.Element {
   const settings = {
@@ -18,25 +19,67 @@ export default function LayoutBanner(): JSX.Element {
     <div className={LB.Wrapper}>
       <Slider {...settings}>
         <div>
-          <img className={LB.SliderItem} src="/images/layout/banner01.png" />
+          <Image
+            className={LB.SliderItem}
+            src="/images/layout/banner01.png"
+            alt="Banner 01"
+            width={800}
+            height={400}
+          />
         </div>
         <div>
-          <img className={LB.SliderItem} src="/images/layout/banner02.png" />
+          <Image
+            className={LB.SliderItem}
+            src="/images/layout/banner02.png"
+            alt="Banner 02"
+            width={800}
+            height={400}
+          />
         </div>
         <div>
-          <img className={LB.SliderItem} src="/images/layout/banner03.png" />
+          <Image
+            className={LB.SliderItem}
+            src="/images/layout/banner03.png"
+            alt="Banner 03"
+            width={800}
+            height={400}
+          />
         </div>
         <div>
-          <img className={LB.SliderItem} src="/images/layout/banner04.png" />
+          <Image
+            className={LB.SliderItem}
+            src="/images/layout/banner04.png"
+            alt="Banner 04"
+            width={800}
+            height={400}
+          />
         </div>
         <div>
-          <img className={LB.SliderItem} src="/images/layout/banner05.png" />
+          <Image
+            className={LB.SliderItem}
+            src="/images/layout/banner05.png"
+            alt="Banner 05"
+            width={800}
+            height={400}
+          />
         </div>
         <div>
-          <img className={LB.SliderItem} src="/images/layout/banner06.png" />
+          <Image
+            className={LB.SliderItem}
+            src="/images/layout/banner06.png"
+            alt="Banner 06"
+            width={800}
+            height={400}
+          />
         </div>
         <div>
-          <img className={LB.SliderItem} src="/images/layout/banner07.png" />
+          <Image
+            className={LB.SliderItem}
+            src="/images/layout/banner07.png"
+            alt="Banner 07"
+            width={800}
+            height={400}
+          />
         </div>
       </Slider>
     </div>
