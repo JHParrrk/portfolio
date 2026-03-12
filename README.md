@@ -1,141 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
-## Getting Started
+# 🎓 Next.js 중고장터 서비스 (Market Archive)
+### **Next.js와 GraphQL 기반의 대규모 B2C 서비스 웹 Front-End 아키텍처 설계**
 
-First, run the development server:
+<div align="center">
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white" />
+  <img src="https://img.shields.io/badge/Apollo%20Client-311C87?style=for-the-badge&logo=apollographql&logoColor=white" />
+</div>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+<br />
+
+"복잡한 비즈니스 로직을 견고한 엔지니어링으로 구조화합니다."
+단순한 쇼핑몰을 넘어, **BFF(Backend For Frontend) 패턴**과 **FSD 아키텍처**를 통해 대규모 서비스의 확장성과 성능 최전선을 검증한 프로젝트입니다.
+
+---
+
+## 🔗 Quick Links
+- **🌐 Live Demo (Frontend):** [준비 중]
+- **📑 Architecture Documentation:** [README_ARCHITECTURE.md](README_ARCHITECTURE.md)
+- **🖥️ BFF/Proxy API Documentation:** [README_BFF.md](README_BFF.md)
+
+---
+
+## 🏗️ 프로젝트 개요 (Project Overview)
+본 프로젝트는 **실제 상용 서비스 수준의 성능과 보안**을 목표로 설계되었습니다. 대중을 대상으로 하는 B2C 중고장터 서비스 특성에 맞추어 **SEO 최적화**, **성능(Performance)**, 그리고 **안정적인 데이터 가공(BFF)**을 최우선으로 구현했습니다.
+
+---
+
+## 🎯 주요 목표 (Main Goals)
+- **SEO & 성능 우위 확보:** 검색 엔진 최적화와 초기 로딩 속도 극대화를 통해 비즈니스 가치를 높입니다.
+- **아키텍처 확장성:** FSD(Feature-Sliced Design)를 도입하여 대규모 팀 프로젝트에서도 유지보수가 용이한 구조를 지향합니다.
+- **데이터 무결성 & 보안:** BFF 레이어를 통한 민감 데이터 보호 및 클라이언트 최적화 가공 파이프라인을 구축합니다.
+
+---
+
+## ✨ 핵심 기능 (Key Features)
+
+### 🧠 1. 지능형 렌더링 파이프라인
+- **하이브리드 렌더링 전략:** 게시글 목록 등은 **SSG/ISR**로, 마이페이지 등은 **SSR**로 처리하여 응답 속도와 서버 성능의 균형을 맞추었습니다.
+- **Next.js Optimization:** `<Image />` 컴포넌트 자동 리사이징, `next/font`, `next/script` 최적화 지원으로 Lighthouse 성능 점수를 극대화했습니다.
+- **다크 모드 시스템:** Zustand와 CSS Variables를 연동하여 시스템 테마에 반응하는 유연한 UI 환경을 제공합니다.
+
+### 📋 2. 스마트 데이터 매니지먼트 (BFF & GraphQL)
+- **GraphQL Proxy 계층:** Next.js API Routes를 활용하여 외부 API 키 노출을 차단하고, 효율적인 **BFF(Backend For Frontend)** 역할을 수행합니다.
+- **Apollo Client State:** InMemoryCache를 활용한 정규화된 캐싱 전략으로 불필요한 네트워크 요청을 줄였습니다.
+- **UI 맞춤형 가공:** 백엔드의 거대한 JSON 응답을 UI 렌더링에 최적화된 최소 단위로 변환하여 전달합니다.
+
+### 📊 3. 도메인 기반 기능 모듈 (Features)
+- **중고 거래 워크플로우:** 상품 등록/상세/수정, 검색 엔진 최적화된 URL 구조, 무한 스크롤 기반의 리스트를 제공합니다.
+- **인증 및 권한 시스템:** JWT 기반의 로그인을 처리하며, HOC(Higher-Order Component)를 통해 접근 권한을 체계적으로 관리합니다.
+- **게시판 & 댓글 시스템:** 계층형 데이터 구조를 안정적으로 렌더링하고 유저 인터랙션을 처리합니다.
+
+---
+
+## 🛠 기술 스택 (Tech Stack)
+
+### ⚙️ Frontend & Infrastructure
+- **Framework:** Next.js (Pages Router), TypeScript
+- **State Management:** Apollo Client (Server State), Zustand (Client State)
+- **Styling:** Emotion.js (CSS-in-JS), Vanilla Extract, CSS Variables
+- **API Strategy:** GraphQL, BFF Pattern (Next.js API Routes)
+
+---
+
+## 📂 프로젝트 구조 (Project Structure)
+```
+src/
+├── app/                  # 애플리케이션 루트 설정 (Providers, Global Styles)
+├── features/             # 비즈니스 도메인 모듈 (Feature-Sliced Design)
+│   ├── auth/ui           # 인증 관련 독립 UI 및 로직
+│   ├── boards/ui         # 커뮤니티(게시판) 모듈
+│   └── market/ui         # 중고마켓(상품/거래) 핵심 로듈
+├── shared/               # 공통 유틸리티 및 UI 컴포넌트
+│   ├── api/              # 공용 API 호출 함수 및 BFF 프록시
+│   ├── hooks/            # 커스텀 훅 (useAuth, useMarket 등)
+│   └── ui/               # 공용 UI 컴포넌트 (Layout, Upload, Search)
+└── pages/                # 파일 시스템 라우팅 및 렌더링 진입점
+    ├── api/              # BFF/Proxy API 엔드포인트
+    └── feature-tests/    # 엔지니어링 검증용 테스트 페이지 (SSG, ISR 등)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## ⚙️ 시작하기 (Getting Started)
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
-
-# Portfolio Project
-
-**Portfolio Project**는 Next.js와 TypeScript를 기반으로 한 포트폴리오 웹 애플리케이션으로, React와 Apollo Client를 활용하여 클라이언트 측 상태 관리 및 GraphQL API 통신을 처리합니다.
-
-## 주요 기능
-
-- **Next.js 기반 프레임워크**:
-  - 프로젝트는 `create-next-app`으로 생성되었으며 React와 TypeScript를 활용합니다.
-  - **BFF (Backend For Frontend) 패턴**: Next.js API Routes를 활용하여 외부 API(GraphQL)를 안전하게 프록시하고 클라이언트에 최적화된 데이터를 전달합니다. (예: [/market/bff](/market/bff))
-  - 서버 사이드 렌더링(SSR) 및 정적 사이트 생성(SSG)을 지원합니다.
-
-- **GraphQL 연동**:
-  - Apollo Client를 통해 GraphQL API와 통신하며, 사용자 인증 및 데이터 관리를 처리합니다.
-  - 예제 쿼리 및 뮤테이션 로직이 포함되어 있습니다.
-
-- **Recoil 상태 관리**:
-  - Recoil을 사용하여 클라이언트 전역 상태를 관리합니다.
-
-- **글로벌 스타일링**:
-  - Emotion을 활용한 글로벌 스타일링 적용.
-  - 다크 모드와 라이트 모드 지원.
-
-- **컴포넌트 기반 구조**:
-  - 재사용 가능한 컴포넌트 기반으로 설계되어 유지보수성과 확장성을 높였습니다.
-
-## 디렉토리 구조
-
-```
-portfolio/
-├── pages/                            # Next.js의 페이지 라우터 디렉토리
-│   ├── _app.tsx                      # 전역 설정 파일
-│   ├── index.tsx                     # 메인 페이지
-├── src/                              # 소스 코드 디렉토리
-│   ├── commons/                      # 공통 컴포넌트 및 스타일
-│   ├── components/                   # 화면 단위별 컴포넌트
-│   └── styles/                       # Emotion 및 CSS 스타일 파일
-├── styles/                           # 전역 스타일 파일
-│   ├── globals.css                   # 글로벌 CSS
-│   └── Home.module.css               # 홈 페이지 스타일
-├── public/                           # 정적 리소스(이미지, 아이콘 등)
-├── next.config.mjs                   # Next.js 설정 파일
-├── README.md                         # 프로젝트 소개 파일
-└── memo.txt                          # GraphQL에 대한 메모
-```
-
-## 설치 및 실행
-
-1. **저장소 클론**:
-
-   ```bash
-   git clone https://github.com/JHParrrk/portfolio.git
-   cd portfolio
+1. **환경 변수 설정**
+   루트 위치에 `.env` 파일을 생성하고 아래 항목을 설정합니다.
+   ```env
+   BACKEND_GRAPHQL_URL=https://backendonline.codebootcamp.co.kr/graphql
    ```
 
-2. **의존성 설치**:
-
+2. **설치 및 실행**
    ```bash
-   npm install
+   # 의존성 설치
+   $ npm install
+
+   # 개발 서버 실행
+   $ npm run dev
+
+   # 프로덕션 빌드 및 실행
+   $ npm run build
+   $ npm run start
    ```
 
-3. **개발 서버 실행**:
+---
 
-   ```bash
-   npm run dev
-   ```
+## 📄 라이선스 (License)
+본 프로젝트는 개인 학습 및 포트폴리오 목적으로 제작되었으며, MIT License를 준수합니다.
 
-4. **브라우저에서 확인**:
-   - 기본적으로 [http://localhost:3000](http://localhost:3000)에서 애플리케이션에 접근할 수 있습니다.
-
-## 주요 코드 설명
-
-### **GraphQL 통신**
-
-- `memo.txt`:
-  - GraphQL 쿼리 작성법 및 서버와 클라이언트 간의 데이터 매핑에 대한 설명이 포함되어 있습니다.
-
-### **전역 상태 관리**
-
-- `pages/_app.tsx`:
-  - Recoil을 활용하여 애플리케이션의 전역 상태를 관리합니다.
-
-### **글로벌 스타일링**
-
-- `styles/globals.css`:
-  - 글로벌 CSS 파일로, 다크 모드 및 반응형 디자인을 지원합니다.
-- `styles/Home.module.css`:
-  - 메인 페이지의 스타일을 정의합니다.
-
-### **Apollo Client**
-
-- `ApolloSettings` 컴포넌트를 통해 GraphQL API와의 통신을 설정합니다.
-
-## 참고 사항
-
-- 이 프로젝트는 학습 및 포트폴리오용으로 제작되었습니다.
-- 기여 및 피드백은 언제나 환영합니다!
-
-## 라이선스
-
-이 프로젝트는 개인 학습 목적으로 제작되었으며, 별도의 라이선스가 제공되지 않습니다.
+---
+*이 프로젝트는 대규모 서비스 환경의 요구사항을 프론트엔드 엔지니어의 관점에서 구조화하고 성능을 극대화한 결과물입니다.*
